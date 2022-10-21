@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:nextparty/auth/forgot_password.dart';
 import 'package:nextparty/auth/register.dart';
 
-class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+import 'login.dart';
+
+class ForgotPassword extends StatelessWidget {
+  const ForgotPassword({Key? key}) : super(key: key);
   Duration get loginTime =>
       Duration(milliseconds: 2250); // 2.25 seconds to wait
   @override
@@ -24,7 +25,7 @@ class Login extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Sing In',
+                  'Reset your password',
                   style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -69,61 +70,29 @@ class Login extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  child: TextField(
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      icon: Icon(Icons.lock),
-                      labelText: 'Password',
-                    ),
-                  ),
-                ),
-                Container(
                     height: 50,
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: ElevatedButton(
-                      child: const Text('Login'),
-                      onPressed: () {
-                        print(emailController.text);
-                        print(passwordController.text);
-                      },
+                      child: const Text('Send reset link'),
+                      onPressed: () {},
                     )),
               ],
             ),
             Column(children: [
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
-                    Image(
-                      image: AssetImage('assets/logos/gg.png'),
-                    ),
-                    Image(
-                      image: AssetImage('assets/logos/fb.png'),
-                    ),
-                    Image(
-                      image: AssetImage('assets/logos/tw.png'),
-                    )
-                  ],
-                ),
-              ),
               Container(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Forgot password?',
+                        'Return to',
                         style:
                             TextStyle(fontSize: 16, color: Color(0xff2699FB)),
                       ),
                       TextButton(
-                        child: Text(
-                          'Reset',
+                        child: const Text(
+                          'Sing In',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -133,8 +102,7 @@ class Login extends StatelessWidget {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ForgotPassword()));
+                                  builder: (context) => const Login()));
                         },
                       )
                     ],

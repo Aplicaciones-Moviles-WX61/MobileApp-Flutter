@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nextparty/auth/forgot_password.dart';
+
+import 'login.dart';
 
 class Register extends StatelessWidget {
   const Register({Key? key}) : super(key: key);
 
   Duration get loginTime =>
       Duration(milliseconds: 2250); // 2.25 seconds to wait
+
   @override
   Widget build(BuildContext context) {
     TextEditingController nameController = TextEditingController();
@@ -43,14 +47,17 @@ class Register extends StatelessWidget {
                         ),
                         TextButton(
                           child: const Text(
-                            'Sign in',
+                            'Sign In',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff2699FB)),
                           ),
                           onPressed: () {
-                            print('Sign up button pressed');
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Login()));
                           },
                         ),
                       ],
@@ -141,7 +148,7 @@ class Register extends StatelessWidget {
                         width: double.infinity,
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                         child: ElevatedButton(
-                          child: const Text('Login'),
+                          child: const Text('Register'),
                           onPressed: () {
                             print('----Login button pressed----');
                             print('Name: ${nameController.text}');
@@ -174,7 +181,11 @@ class Register extends StatelessWidget {
                                   color: Color(0xff2699FB)),
                             ),
                             onPressed: () {
-                              print('recover password');
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgotPassword()));
                             },
                           )
                         ],
