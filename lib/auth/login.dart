@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:nextparty/auth/forgot_password.dart';
 import 'package:nextparty/auth/register.dart';
+import 'package:nextparty/index.dart';
 
-class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
-  Duration get loginTime =>
-      Duration(milliseconds: 2250); // 2.25 seconds to wait
+class Login extends StatefulWidget {
+  const Login({super.key});
+  @override
+  State<Login> createState() => LoginStateful();
+}
+
+class LoginStateful extends State<Login> {
+  // Duration get loginTime => Duration(milliseconds: 2250); // 2.25 seconds to wait
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
@@ -87,8 +92,10 @@ class Login extends StatelessWidget {
                     child: ElevatedButton(
                       child: const Text('Login'),
                       onPressed: () {
-                        print(emailController.text);
-                        print(passwordController.text);
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Index()));
                       },
                     )),
               ],
@@ -122,7 +129,7 @@ class Login extends StatelessWidget {
                             TextStyle(fontSize: 16, color: Color(0xff2699FB)),
                       ),
                       TextButton(
-                        child: Text(
+                        child: const Text(
                           'Reset',
                           style: TextStyle(
                               fontSize: 16,

@@ -4,11 +4,15 @@ import 'package:nextparty/auth/forgot_password.dart';
 
 import 'login.dart';
 
-class Register extends StatelessWidget {
-  const Register({Key? key}) : super(key: key);
+class Register extends StatefulWidget {
+  const Register({super.key});
 
-  Duration get loginTime =>
-      Duration(milliseconds: 2250); // 2.25 seconds to wait
+  @override
+  State<Register> createState() => RegisterStateful();
+}
+
+class RegisterStateful extends State<Register> {
+  // Duration get loginTime => Duration(milliseconds: 2250); // 2.25 seconds to wait
 
   @override
   Widget build(BuildContext context) {

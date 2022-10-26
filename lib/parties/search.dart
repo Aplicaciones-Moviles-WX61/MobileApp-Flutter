@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class Party extends StatefulWidget {
-  const Party({super.key});
+class Search extends StatefulWidget {
+  const Search({super.key});
 
   @override
-  State<Party> createState() => PartyStateful();
+  State<Search> createState() => SearchStateful();
 }
 
-class PartyStateful extends State<Party> {
+class SearchStateful extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nextparty/parties/parties.dart';
+import 'package:nextparty/auth/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Parties(),
+      home: Login(),
     );
   }
 }

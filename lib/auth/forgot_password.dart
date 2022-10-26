@@ -3,14 +3,17 @@ import 'package:nextparty/auth/register.dart';
 
 import 'login.dart';
 
-class ForgotPassword extends StatelessWidget {
-  const ForgotPassword({Key? key}) : super(key: key);
-  Duration get loginTime =>
-      Duration(milliseconds: 2250); // 2.25 seconds to wait
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({super.key});
+  @override
+  State<ForgotPassword> createState() => ForgotPasswordStateful();
+}
+
+class ForgotPasswordStateful extends State<ForgotPassword> {
+  // Duration get loginTime => Duration(milliseconds: 2250); // 2.25 seconds to wait
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       backgroundColor: Colors.white,
