@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nextparty/parties/create_party.dart';
+import 'package:nextparty/parties/parties.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CreateParty(),
+      home: Parties(),
     );
   }
 }

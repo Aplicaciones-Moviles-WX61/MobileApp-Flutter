@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class CreateParty extends StatelessWidget {
-  const CreateParty({Key? key}) : super(key: key);
+class CreateParty extends StatefulWidget {
+  const CreateParty({super.key});
 
+  @override
+  State<CreateParty> createState() => CreatePartyStateful();
+}
+
+class CreatePartyStateful extends State<CreateParty> {
+  // const CreateParty({Key? key}) : super(key: key);
   static const OutlineInputBorder myInputBorder = OutlineInputBorder(
       borderSide: BorderSide(
     color: Color(0xffBCE0FD),
@@ -11,6 +17,9 @@ class CreateParty extends StatelessWidget {
   ));
   Duration get loginTime =>
       const Duration(milliseconds: 2250); // 2.25 seconds to wait
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {
@@ -21,34 +30,47 @@ class CreateParty extends StatelessWidget {
 
     return Scaffold(
         backgroundColor: Colors.white,
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(color: Color(0xffBCE0FD)),
-                child: Text('Drawer Header',
-                    style: TextStyle(color: Color(0xff2699FB))),
-              ),
-              ListTile(
-                title: const Text(
-                  'Create Party',
-                  style: TextStyle(color: Color(0xff2699FB)),
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                title: const Text(
-                  'My Parties',
-                  style: TextStyle(color: Color(0xff2699FB)),
-                ),
-                onTap: () {
-                  // Update the state of the app.
-                  // ...
-                },
-              ),
-            ],
-          ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_box, color: Colors.white70),
+              activeIcon: Icon(Icons.add_box, color: Colors.white),
+              backgroundColor: Color(0xff2699FB),
+              label: 'Create Party',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list_alt, color: Colors.white70),
+              activeIcon: Icon(Icons.list_alt, color: Colors.white),
+              backgroundColor: Color(0xff2699FB),
+              label: 'Notifications',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search, color: Colors.white70),
+              activeIcon: Icon(Icons.search, color: Colors.white),
+              backgroundColor: Color(0xff2699FB),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person, color: Colors.white70),
+              activeIcon: Icon(Icons.person, color: Colors.white),
+              backgroundColor: Color(0xff2699FB),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings, color: Colors.white70),
+              activeIcon: Icon(Icons.settings, color: Colors.white),
+              backgroundColor: Color(0xff2699FB),
+              label: 'Settings',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.white,
+          showSelectedLabels: false,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
         ),
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -56,9 +78,12 @@ class CreateParty extends StatelessWidget {
           leading: Builder(
             builder: (BuildContext context) {
               return IconButton(
-                icon: const Icon(Icons.menu, color: Color(0xff2699FB)),
+                icon: const Icon(Icons.arrow_back_ios_rounded,
+                    color: Color(0xff2699FB)),
                 onPressed: () {
-                  Scaffold.of(context).openDrawer();
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  }
                 },
               );
             },
@@ -106,6 +131,7 @@ class CreateParty extends StatelessWidget {
                             padding:
                                 const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                             child: TextField(
+                              style: const TextStyle(color: Color(0xff2699FB)),
                               controller: partyNameController,
                               decoration: const InputDecoration(
                                 prefixIcon:
@@ -123,6 +149,7 @@ class CreateParty extends StatelessWidget {
                             padding:
                                 const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                             child: TextField(
+                              style: const TextStyle(color: Color(0xff2699FB)),
                               controller: partyDescriptionController,
                               decoration: const InputDecoration(
                                 prefixIcon: Icon(Icons.description,
@@ -140,6 +167,7 @@ class CreateParty extends StatelessWidget {
                             padding:
                                 const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                             child: TextField(
+                              style: const TextStyle(color: Color(0xff2699FB)),
                               controller: dateController,
                               readOnly: true,
                               decoration: const InputDecoration(
@@ -167,6 +195,7 @@ class CreateParty extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
                             child: TextField(
+                              style: const TextStyle(color: Color(0xff2699FB)),
                               controller: locationController,
                               decoration: const InputDecoration(
                                 prefixIcon: Icon(Icons.location_on,
@@ -183,7 +212,7 @@ class CreateParty extends StatelessWidget {
                         ],
                       ),
                       Container(height: 30),
-                      Container(
+                      SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             child: const Text('Create Party',
