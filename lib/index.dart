@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:nextparty/parties/create_party.dart';
-import 'package:nextparty/parties/parties.dart';
-import 'package:nextparty/parties/profile.dart';
-import 'package:nextparty/parties/settings.dart';
-import 'package:nextparty/parties/search.dart';
+import 'package:nextparty/menu/create_party.dart';
+import 'package:nextparty/menu/parties.dart';
+import 'package:nextparty/menu/profile.dart';
+import 'package:nextparty/menu/settings.dart';
+import 'package:nextparty/menu/search.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:nextparty/parties/party_view.dart';
+import 'package:nextparty/menu/party_view.dart';
 
 class Parties extends StatefulWidget {
   const Parties({super.key});
