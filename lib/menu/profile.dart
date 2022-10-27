@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../services/user_service.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -21,6 +24,25 @@ class ProfileStateful extends State<Profile> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  //
+  // initState() async {
+  //   super.initState();
+
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    var user = userService().getUser();
+    user.then((value) {
+      nameController.text = value.name;
+      lastNameController.text = value.lastname;
+      emailController.text = value.email;
+      phoneController.text = value.phone!;
+      dateController.text = value.birthday as String;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +80,8 @@ class ProfileStateful extends State<Profile> {
                             border: myInputBorder,
                             enabledBorder: myInputBorder,
                             focusedBorder: myInputBorder,
+                            prefixIcon:
+                                Icon(Icons.person, color: Color(0xff2699FB)),
                             hintText: 'Name',
                             hintStyle: TextStyle(color: Color(0xff2699FB))),
                       ),
@@ -71,6 +95,8 @@ class ProfileStateful extends State<Profile> {
                             border: myInputBorder,
                             enabledBorder: myInputBorder,
                             focusedBorder: myInputBorder,
+                            prefixIcon:
+                                Icon(Icons.person, color: Color(0xff2699FB)),
                             hintText: 'Last Name',
                             hintStyle: TextStyle(color: Color(0xff2699FB))),
                       ),

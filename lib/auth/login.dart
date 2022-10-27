@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:nextparty/auth/forgot_password.dart';
 import 'package:nextparty/auth/register.dart';
 import 'package:nextparty/index.dart';
+import 'package:nextparty/services/user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -10,12 +14,57 @@ class Login extends StatefulWidget {
 }
 
 class LoginStateful extends State<Login> {
-  // Duration get loginTime => Duration(milliseconds: 2250); // 2.25 seconds to wait
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  userService auth = userService();
+
+  static const OutlineInputBorder myInputBorder = OutlineInputBorder(
+      borderSide: BorderSide(
+    color: Color(0xffBCE0FD),
+  ));
+
+  initState() {
+    super.initState();
+    auth.isLogged().then((value) {
+      if (value) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Index()),
+        );
+      }
+    });
+  }
+
+  authLogin(email, password) async {
+    var user = await auth.AuthUser(email, password);
+    if (user != null) {
+      Map<String, dynamic> body = jsonDecode(user);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', body['token']);
+      prefs.setString('id', jsonEncode(body['user']['id']));
+      prefs.setString('email', jsonEncode(body['user']['email']));
+      prefs.setString('name', jsonEncode(body['user']['name']));
+      prefs.setString('lastname', jsonEncode(body['user']['lastname']));
+      prefs.setString('phone', jsonEncode(body['user']['phone']));
+      prefs.setString('birthday', jsonEncode(body['user']['birthday']));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Index()),
+      );
+    } else {
+      showAboutDialog(
+        context: context,
+        children: [
+          const Text('Email or password is incorrect'),
+          const Text('Try again'),
+        ],
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -66,27 +115,36 @@ class LoginStateful extends State<Login> {
                 ),
                 Column(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    SizedBox(
+                      width: 360,
                       child: TextField(
                         controller: emailController,
+                        style: const TextStyle(color: Color(0xff2699FB)),
                         decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          icon: Icon(Icons.email),
-                          labelText: 'E-mail',
-                        ),
+                            border: myInputBorder,
+                            enabledBorder: myInputBorder,
+                            focusedBorder: myInputBorder,
+                            prefixIcon:
+                                Icon(Icons.email, color: Color(0xff2699FB)),
+                            hintText: 'Email',
+                            hintStyle: TextStyle(color: Color(0xff2699FB))),
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      padding: const EdgeInsets.only(top: 16),
+                      width: 360,
                       child: TextField(
-                        obscureText: true,
                         controller: passwordController,
+                        style: const TextStyle(color: Color(0xff2699FB)),
+                        obscureText: true,
                         decoration: const InputDecoration(
-                          border: UnderlineInputBorder(),
-                          icon: Icon(Icons.lock),
-                          labelText: 'Password',
-                        ),
+                            border: myInputBorder,
+                            enabledBorder: myInputBorder,
+                            focusedBorder: myInputBorder,
+                            prefixIcon:
+                                Icon(Icons.lock, color: Color(0xff2699FB)),
+                            hintText: 'Password',
+                            hintStyle: TextStyle(color: Color(0xff2699FB))),
                       ),
                     ),
                     Container(
@@ -96,10 +154,8 @@ class LoginStateful extends State<Login> {
                         child: ElevatedButton(
                           child: const Text('Login'),
                           onPressed: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Index()));
+                            authLogin(
+                                emailController.text, passwordController.text);
                           },
                         )),
                   ],

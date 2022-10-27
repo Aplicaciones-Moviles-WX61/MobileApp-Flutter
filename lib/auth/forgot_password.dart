@@ -10,7 +10,11 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class ForgotPasswordStateful extends State<ForgotPassword> {
-  // Duration get loginTime => Duration(milliseconds: 2250); // 2.25 seconds to wait
+  static const OutlineInputBorder myInputBorder = OutlineInputBorder(
+      borderSide: BorderSide(
+    color: Color(0xffBCE0FD),
+  ));
+
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
@@ -64,12 +68,15 @@ class ForgotPasswordStateful extends State<ForgotPassword> {
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                   child: TextField(
+                    style: const TextStyle(color: Color(0xff2699FB)),
                     controller: emailController,
                     decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      icon: Icon(Icons.email),
-                      labelText: 'E-mail',
-                    ),
+                        border: myInputBorder,
+                        enabledBorder: myInputBorder,
+                        focusedBorder: myInputBorder,
+                        prefixIcon: Icon(Icons.email, color: Color(0xff2699FB)),
+                        hintText: 'E-mail',
+                        hintStyle: TextStyle(color: Color(0xff2699FB))),
                   ),
                 ),
                 Container(

@@ -16,14 +16,13 @@ class CreatePartyStateful extends State<CreateParty> {
   ));
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  TextEditingController partyNameController = TextEditingController();
+  TextEditingController partyDescriptionController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController partyNameController = TextEditingController();
-    TextEditingController partyDescriptionController = TextEditingController();
-    TextEditingController dateController = TextEditingController();
-    TextEditingController locationController = TextEditingController();
-
     return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(

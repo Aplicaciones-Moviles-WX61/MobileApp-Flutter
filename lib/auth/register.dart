@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nextparty/auth/forgot_password.dart';
 
+import '../Models/user.dart';
+import '../services/user_service.dart';
 import 'login.dart';
 
 class Register extends StatefulWidget {
@@ -14,16 +16,51 @@ class Register extends StatefulWidget {
 }
 
 class RegisterStateful extends State<Register> {
-  // Duration get loginTime => Duration(milliseconds: 2250); // 2.25 seconds to wait
+  userService auth = userService();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
+  static const OutlineInputBorder myInputBorder = OutlineInputBorder(
+      borderSide: BorderSide(
+    color: Color(0xffBCE0FD),
+  ));
+
+  // register
+  register() async {
+    var user = await auth.registerUser(
+      registerDto(
+          name: nameController.text,
+          lastname: lastNameController.text,
+          email: emailController.text,
+          password: passwordController.text,
+          phone: phoneController.text,
+          birthday: DateFormat('yyyy-MM-dd')
+              .format(DateTime.parse(dateController.text))
+              .toString()),
+    );
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
+      print(user);
+    } else {
+      showAboutDialog(
+        context: context,
+        children: [
+          const Text('An error has occurred'),
+          const Text('Try again'),
+        ],
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController lastNameController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController dateController = TextEditingController();
-    TextEditingController phoneController = TextEditingController();
     return Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -77,75 +114,98 @@ class RegisterStateful extends State<Register> {
                       Container(
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: TextField(
+                          style: const TextStyle(color: Color(0xff2699FB)),
                           controller: nameController,
                           decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Name',
+                            border: myInputBorder,
+                            enabledBorder: myInputBorder,
+                            focusedBorder: myInputBorder,
+                            hintText: 'Name',
+                            hintStyle: TextStyle(color: Color(0xff2699FB)),
                           ),
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         child: TextField(
+                          style: const TextStyle(color: Color(0xff2699FB)),
                           controller: lastNameController,
                           decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: 'Lastname',
-                          ),
+                              border: myInputBorder,
+                              enabledBorder: myInputBorder,
+                              focusedBorder: myInputBorder,
+                              hintText: 'Lastname',
+                              hintStyle: TextStyle(color: Color(0xff2699FB))),
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         child: TextField(
+                          style: const TextStyle(color: Color(0xff2699FB)),
                           controller: emailController,
                           decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            icon: Icon(Icons.email),
-                            labelText: 'E-mail',
-                          ),
+                              border: myInputBorder,
+                              enabledBorder: myInputBorder,
+                              focusedBorder: myInputBorder,
+                              prefixIcon:
+                                  Icon(Icons.email, color: Color(0xff2699FB)),
+                              hintText: 'E-mail',
+                              hintStyle: TextStyle(color: Color(0xff2699FB))),
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         child: TextField(
+                          style: const TextStyle(color: Color(0xff2699FB)),
                           obscureText: true,
                           controller: passwordController,
                           decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            icon: Icon(Icons.lock),
-                            labelText: 'Password',
-                          ),
+                              border: myInputBorder,
+                              enabledBorder: myInputBorder,
+                              focusedBorder: myInputBorder,
+                              prefixIcon:
+                                  Icon(Icons.lock, color: Color(0xff2699FB)),
+                              hintText: 'Password',
+                              hintStyle: TextStyle(color: Color(0xff2699FB))),
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         child: TextField(
+                          style: const TextStyle(color: Color(0xff2699FB)),
                           controller: phoneController,
                           keyboardType: TextInputType.phone,
                           decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            icon: Icon(Icons.phone),
-                            labelText: 'Phone',
-                          ),
+                              border: myInputBorder,
+                              enabledBorder: myInputBorder,
+                              focusedBorder: myInputBorder,
+                              prefixIcon:
+                                  Icon(Icons.phone, color: Color(0xff2699FB)),
+                              hintText: 'Phone',
+                              hintStyle: TextStyle(color: Color(0xff2699FB))),
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                         child: TextField(
+                          style: const TextStyle(color: Color(0xff2699FB)),
                           controller: dateController,
                           readOnly: true,
                           decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            icon: Icon(Icons.calendar_today),
-                            labelText: 'Birthday',
-                          ),
+                              border: myInputBorder,
+                              enabledBorder: myInputBorder,
+                              focusedBorder: myInputBorder,
+                              prefixIcon: Icon(Icons.calendar_today,
+                                  color: Color(0xff2699FB)),
+                              hintText: 'Birthday',
+                              hintStyle: TextStyle(color: Color(0xff2699FB))),
                           onTap: () async {
                             DateTime? pickedDate = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
+                                firstDate: DateTime(1910),
                                 lastDate: DateTime(2101));
-                            dateController.text = DateFormat('dd/MM/yyyy')
+                            dateController.text = DateFormat('yyyy-MM-dd')
                                 .format(pickedDate!)
                                 .toString();
                           },
@@ -158,16 +218,7 @@ class RegisterStateful extends State<Register> {
                           child: ElevatedButton(
                             child: const Text('Register'),
                             onPressed: () {
-                              // print('----Login button pressed----');
-                              // print('Name: ${nameController.text}');
-                              // print('Lastname: ${lastNameController.text}');
-                              // print('E-mail: ${emailController.text}');
-                              // print('Phone: ${phoneController.text}');
-                              // print('Password: ${passwordController.text}');
-                              // print('Birthday: ${dateController.text}');
-                              print(MediaQuery.of(context).size.height -
-                                  window.padding.top);
-                              print(MediaQuery.of(context).size.height);
+                              register();
                             },
                           )),
                     ],
