@@ -50,7 +50,7 @@ class PartiesStateful extends State<Parties> {
                                     const EdgeInsets.fromLTRB(10, 20, 10, 20),
                                 child: ListTile(
                                   title: const Text(
-                                    'Party Name',
+                                    'Fiesta de Jhon',
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class PartiesStateful extends State<Parties> {
                                         color: Color(0xff2699FB)),
                                   ),
                                   trailing: const Text(
-                                    '01/01/2023',
+                                    '29/10/2022',
                                     style: TextStyle(
                                         fontSize: 16, color: Color(0xff2699FB)),
                                   ),
