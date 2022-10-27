@@ -9,6 +9,12 @@ class Search extends StatefulWidget {
 }
 
 class SearchStateful extends State<Search> {
+  static const OutlineInputBorder myInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(8)),
+      borderSide: BorderSide(
+        color: Color(0xff7FC4FD),
+      ));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +24,23 @@ class SearchStateful extends State<Search> {
               child: Padding(
                   padding: const EdgeInsets.fromLTRB(24.0, 12.0, 24.0, 12.0),
                   child: Column(
-                    children: <Widget>[],
+                    children: const <Widget>[
+                      //Search bar
+                      SizedBox(
+                        height: 50,
+                        child: TextField(
+                          style: TextStyle(color: Color(0xff2699FB)),
+                          decoration: InputDecoration(
+                              border: myInputBorder,
+                              enabledBorder: myInputBorder,
+                              focusedBorder: myInputBorder,
+                              prefixIcon:
+                                  Icon(Icons.search, color: Color(0xff2699FB)),
+                              hintText: 'Search',
+                              hintStyle: TextStyle(color: Color(0xff2699FB))),
+                        ),
+                      ),
+                    ],
                   ))),
         ));
   }
