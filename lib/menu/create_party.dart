@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nextparty/services/party_service.dart';
 
 class CreateParty extends StatefulWidget {
   const CreateParty({super.key});
@@ -9,6 +10,7 @@ class CreateParty extends StatefulWidget {
 }
 
 class CreatePartyStateful extends State<CreateParty> {
+  partyService service = partyService();
   static const OutlineInputBorder myInputBorder = OutlineInputBorder(
       borderSide: BorderSide(
     color: Color(0xffBCE0FD),
@@ -20,6 +22,32 @@ class CreatePartyStateful extends State<CreateParty> {
   TextEditingController partyDescriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController locationController = TextEditingController();
+
+  createParty() async {
+    var response = await service.createParty(PartyDto(
+      name: partyNameController.text,
+      description: partyDescriptionController.text,
+      date: DateFormat('yyyy-MM-dd')
+          .format(DateTime.parse(dateController.text))
+          .toString(),
+      location: locationController.text,
+    ));
+    if (response != null) {
+      // showAboutDialog(
+      //   context: context,
+      //   children: [const Text('Party created successfully')],
+      // );
+      print(response);
+    } else {
+      showAboutDialog(
+        context: context,
+        children: [
+          const Text('An error has occurred'),
+          const Text('Try again'),
+        ],
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,9 +138,9 @@ class CreatePartyStateful extends State<CreateParty> {
                                 DateTime? pickedDate = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime(0),
+                                    firstDate: DateTime(1910),
                                     lastDate: DateTime(2101));
-                                dateController.text = DateFormat('dd/MM/yyyy')
+                                dateController.text = DateFormat('yyyy-MM-dd')
                                     .format(pickedDate!)
                                     .toString();
                               },
@@ -144,7 +172,9 @@ class CreatePartyStateful extends State<CreateParty> {
                             child: const Text('Create Party',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16)),
-                            onPressed: () {},
+                            onPressed: () {
+                              createParty();
+                            },
                           )),
                     ],
                   ))),
