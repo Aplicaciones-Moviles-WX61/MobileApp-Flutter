@@ -1,8 +1,5 @@
 import 'dart:convert';
 
-List<User> welcomeFromJson(String str) =>
-    List<User>.from(json.decode(str).map((x) => User.fromJson(x)));
-
 String userToJson(List<User> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -16,15 +13,6 @@ class User {
     this.phone,
     this.birthday,
   });
-
-  int? id;
-  String name;
-  String lastname;
-  String email;
-  String password;
-  String? phone;
-  DateTime? birthday;
-
   constructor(id, name, lastname, email, password, phone, birthday) {
     this.id = id ?? 0;
     this.name = name ?? '';
@@ -34,6 +22,14 @@ class User {
     this.phone = phone ?? '';
     this.birthday = birthday ?? '';
   }
+
+  int? id;
+  String name;
+  String lastname;
+  String email;
+  String password;
+  String? phone;
+  DateTime? birthday;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],

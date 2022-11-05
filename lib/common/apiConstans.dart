@@ -3,5 +3,5 @@ class ApiConstans {
   static const String login = base + "auth/login";
   static const String register = base + "auth/register";
   static const String user = base + "users/";
-  static const String parties = base + "parties";
+  static const String parties = base + "parties"; // not working
 }
