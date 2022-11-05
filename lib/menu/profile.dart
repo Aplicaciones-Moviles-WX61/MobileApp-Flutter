@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import '../common/desing.dart';
 import '../services/user_service.dart';
 
 class Profile extends StatefulWidget {
@@ -12,23 +11,12 @@ class Profile extends StatefulWidget {
 }
 
 class ProfileStateful extends State<Profile> {
-  static const OutlineInputBorder myInputBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-      borderSide: BorderSide(
-        color: Color(0xff7FC4FD),
-      ));
-
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  //
-  // initState() async {
-  //   super.initState();
-
-  // }
 
   @override
   void initState() {
@@ -77,9 +65,9 @@ class ProfileStateful extends State<Profile> {
                         controller: nameController,
                         style: const TextStyle(color: Color(0xff2699FB)),
                         decoration: const InputDecoration(
-                            border: myInputBorder,
-                            enabledBorder: myInputBorder,
-                            focusedBorder: myInputBorder,
+                            border: Design.editInputBorder,
+                            enabledBorder: Design.editInputBorder,
+                            focusedBorder: Design.editInputBorder,
                             prefixIcon:
                                 Icon(Icons.person, color: Color(0xff2699FB)),
                             hintText: 'Name',
@@ -92,9 +80,9 @@ class ProfileStateful extends State<Profile> {
                         controller: lastNameController,
                         style: const TextStyle(color: Color(0xff2699FB)),
                         decoration: const InputDecoration(
-                            border: myInputBorder,
-                            enabledBorder: myInputBorder,
-                            focusedBorder: myInputBorder,
+                            border: Design.editInputBorder,
+                            enabledBorder: Design.editInputBorder,
+                            focusedBorder: Design.editInputBorder,
                             prefixIcon:
                                 Icon(Icons.person, color: Color(0xff2699FB)),
                             hintText: 'Last Name',
@@ -107,9 +95,9 @@ class ProfileStateful extends State<Profile> {
                         controller: emailController,
                         style: const TextStyle(color: Color(0xff2699FB)),
                         decoration: const InputDecoration(
-                            border: myInputBorder,
-                            enabledBorder: myInputBorder,
-                            focusedBorder: myInputBorder,
+                            border: Design.editInputBorder,
+                            enabledBorder: Design.editInputBorder,
+                            focusedBorder: Design.editInputBorder,
                             prefixIcon:
                                 Icon(Icons.email, color: Color(0xff2699FB)),
                             hintText: 'Email',
@@ -123,9 +111,9 @@ class ProfileStateful extends State<Profile> {
                         style: const TextStyle(color: Color(0xff2699FB)),
                         obscureText: true,
                         decoration: const InputDecoration(
-                            border: myInputBorder,
-                            enabledBorder: myInputBorder,
-                            focusedBorder: myInputBorder,
+                            border: Design.editInputBorder,
+                            enabledBorder: Design.editInputBorder,
+                            focusedBorder: Design.editInputBorder,
                             prefixIcon:
                                 Icon(Icons.lock, color: Color(0xff2699FB)),
                             hintText: 'Password',
@@ -139,9 +127,9 @@ class ProfileStateful extends State<Profile> {
                         keyboardType: TextInputType.number,
                         style: const TextStyle(color: Color(0xff2699FB)),
                         decoration: const InputDecoration(
-                            border: myInputBorder,
-                            enabledBorder: myInputBorder,
-                            focusedBorder: myInputBorder,
+                            border: Design.editInputBorder,
+                            enabledBorder: Design.editInputBorder,
+                            focusedBorder: Design.editInputBorder,
                             prefixIcon:
                                 Icon(Icons.phone, color: Color(0xff2699FB)),
                             hintText: 'Phone',
@@ -155,9 +143,9 @@ class ProfileStateful extends State<Profile> {
                         readOnly: true,
                         style: const TextStyle(color: Color(0xff2699FB)),
                         decoration: const InputDecoration(
-                            border: myInputBorder,
-                            enabledBorder: myInputBorder,
-                            focusedBorder: myInputBorder,
+                            border: Design.editInputBorder,
+                            enabledBorder: Design.editInputBorder,
+                            focusedBorder: Design.editInputBorder,
                             prefixIcon: Icon(Icons.calendar_today,
                                 color: Color(0xff2699FB)),
                             hintText: 'Birthday',

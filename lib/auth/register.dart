@@ -3,10 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nextparty/auth/forgot_password.dart';
-
-import '../Models/user.dart';
 import '../services/user_service.dart';
 import 'login.dart';
+import 'package:nextparty/common/desing.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -23,11 +22,6 @@ class RegisterStateful extends State<Register> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-
-  static const OutlineInputBorder myInputBorder = OutlineInputBorder(
-      borderSide: BorderSide(
-    color: Color(0xffBCE0FD),
-  ));
 
   // register
   register() async {
@@ -117,9 +111,9 @@ class RegisterStateful extends State<Register> {
                           style: const TextStyle(color: Color(0xff2699FB)),
                           controller: nameController,
                           decoration: const InputDecoration(
-                            border: myInputBorder,
-                            enabledBorder: myInputBorder,
-                            focusedBorder: myInputBorder,
+                            border: Design.myInputBorder,
+                            enabledBorder: Design.myInputBorder,
+                            focusedBorder: Design.myInputBorder,
                             hintText: 'Name',
                             hintStyle: TextStyle(color: Color(0xff2699FB)),
                           ),
@@ -131,9 +125,9 @@ class RegisterStateful extends State<Register> {
                           style: const TextStyle(color: Color(0xff2699FB)),
                           controller: lastNameController,
                           decoration: const InputDecoration(
-                              border: myInputBorder,
-                              enabledBorder: myInputBorder,
-                              focusedBorder: myInputBorder,
+                              border: Design.myInputBorder,
+                              enabledBorder: Design.myInputBorder,
+                              focusedBorder: Design.myInputBorder,
                               hintText: 'Lastname',
                               hintStyle: TextStyle(color: Color(0xff2699FB))),
                         ),
@@ -144,9 +138,9 @@ class RegisterStateful extends State<Register> {
                           style: const TextStyle(color: Color(0xff2699FB)),
                           controller: emailController,
                           decoration: const InputDecoration(
-                              border: myInputBorder,
-                              enabledBorder: myInputBorder,
-                              focusedBorder: myInputBorder,
+                              border: Design.myInputBorder,
+                              enabledBorder: Design.myInputBorder,
+                              focusedBorder: Design.myInputBorder,
                               prefixIcon:
                                   Icon(Icons.email, color: Color(0xff2699FB)),
                               hintText: 'E-mail',
@@ -160,9 +154,9 @@ class RegisterStateful extends State<Register> {
                           obscureText: true,
                           controller: passwordController,
                           decoration: const InputDecoration(
-                              border: myInputBorder,
-                              enabledBorder: myInputBorder,
-                              focusedBorder: myInputBorder,
+                              border: Design.myInputBorder,
+                              enabledBorder: Design.myInputBorder,
+                              focusedBorder: Design.myInputBorder,
                               prefixIcon:
                                   Icon(Icons.lock, color: Color(0xff2699FB)),
                               hintText: 'Password',
@@ -176,9 +170,9 @@ class RegisterStateful extends State<Register> {
                           controller: phoneController,
                           keyboardType: TextInputType.phone,
                           decoration: const InputDecoration(
-                              border: myInputBorder,
-                              enabledBorder: myInputBorder,
-                              focusedBorder: myInputBorder,
+                              border: Design.myInputBorder,
+                              enabledBorder: Design.myInputBorder,
+                              focusedBorder: Design.myInputBorder,
                               prefixIcon:
                                   Icon(Icons.phone, color: Color(0xff2699FB)),
                               hintText: 'Phone',
@@ -192,9 +186,9 @@ class RegisterStateful extends State<Register> {
                           controller: dateController,
                           readOnly: true,
                           decoration: const InputDecoration(
-                              border: myInputBorder,
-                              enabledBorder: myInputBorder,
-                              focusedBorder: myInputBorder,
+                              border: Design.myInputBorder,
+                              enabledBorder: Design.myInputBorder,
+                              focusedBorder: Design.myInputBorder,
                               prefixIcon: Icon(Icons.calendar_today,
                                   color: Color(0xff2699FB)),
                               hintText: 'Birthday',

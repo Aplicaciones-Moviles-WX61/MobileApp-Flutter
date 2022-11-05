@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nextparty/auth/register.dart';
 
+import '../common/desing.dart';
 import 'login.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -10,11 +11,6 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class ForgotPasswordStateful extends State<ForgotPassword> {
-  static const OutlineInputBorder myInputBorder = OutlineInputBorder(
-      borderSide: BorderSide(
-    color: Color(0xffBCE0FD),
-  ));
-
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
@@ -71,9 +67,9 @@ class ForgotPasswordStateful extends State<ForgotPassword> {
                     style: const TextStyle(color: Color(0xff2699FB)),
                     controller: emailController,
                     decoration: const InputDecoration(
-                        border: myInputBorder,
-                        enabledBorder: myInputBorder,
-                        focusedBorder: myInputBorder,
+                        border: Design.myInputBorder,
+                        enabledBorder: Design.myInputBorder,
+                        focusedBorder: Design.myInputBorder,
                         prefixIcon: Icon(Icons.email, color: Color(0xff2699FB)),
                         hintText: 'E-mail',
                         hintStyle: TextStyle(color: Color(0xff2699FB))),

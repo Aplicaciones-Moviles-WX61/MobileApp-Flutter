@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:nextparty/common/desing.dart';
 import 'package:nextparty/services/party_service.dart';
+import '../common/desing.dart';
 
 class CreateParty extends StatefulWidget {
   const CreateParty({super.key});
@@ -11,11 +13,6 @@ class CreateParty extends StatefulWidget {
 
 class CreatePartyStateful extends State<CreateParty> {
   partyService service = partyService();
-  static const OutlineInputBorder myInputBorder = OutlineInputBorder(
-      borderSide: BorderSide(
-    color: Color(0xffBCE0FD),
-    width: 3,
-  ));
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   TextEditingController partyNameController = TextEditingController();
@@ -89,10 +86,10 @@ class CreatePartyStateful extends State<CreateParty> {
                               controller: partyNameController,
                               decoration: const InputDecoration(
                                 prefixIcon:
-                                    Icon(Icons.cake, color: Color(0xffBCE0FD)),
-                                border: myInputBorder,
-                                enabledBorder: myInputBorder,
-                                focusedBorder: myInputBorder,
+                                    Icon(Icons.cake, color: Color(0xff2699FB)),
+                                border: Design.myInputBorder,
+                                enabledBorder: Design.myInputBorder,
+                                focusedBorder: Design.myInputBorder,
                                 labelText: 'Name of the event',
                                 labelStyle: TextStyle(
                                     color: Color(0xffBCE0FD), fontSize: 16),
@@ -107,10 +104,10 @@ class CreatePartyStateful extends State<CreateParty> {
                               controller: partyDescriptionController,
                               decoration: const InputDecoration(
                                 prefixIcon: Icon(Icons.description,
-                                    color: Color(0xffBCE0FD)),
-                                border: myInputBorder,
-                                enabledBorder: myInputBorder,
-                                focusedBorder: myInputBorder,
+                                    color: Color(0xff2699FB)),
+                                border: Design.myInputBorder,
+                                enabledBorder: Design.myInputBorder,
+                                focusedBorder: Design.myInputBorder,
                                 labelText: 'Add a description',
                                 labelStyle: TextStyle(
                                     color: Color(0xffBCE0FD), fontSize: 16),
@@ -125,11 +122,11 @@ class CreatePartyStateful extends State<CreateParty> {
                               controller: dateController,
                               readOnly: true,
                               decoration: const InputDecoration(
-                                border: myInputBorder,
-                                enabledBorder: myInputBorder,
-                                focusedBorder: myInputBorder,
+                                border: Design.myInputBorder,
+                                enabledBorder: Design.myInputBorder,
+                                focusedBorder: Design.myInputBorder,
                                 prefixIcon: Icon(Icons.calendar_today,
-                                    color: Color(0xffBCE0FD)),
+                                    color: Color(0xff2699FB)),
                                 labelText: 'Date',
                                 labelStyle: TextStyle(
                                     color: Color(0xffBCE0FD), fontSize: 16),
@@ -153,10 +150,10 @@ class CreatePartyStateful extends State<CreateParty> {
                               controller: locationController,
                               decoration: const InputDecoration(
                                 prefixIcon: Icon(Icons.location_on,
-                                    color: Color(0xffBCE0FD)),
-                                border: myInputBorder,
-                                enabledBorder: myInputBorder,
-                                focusedBorder: myInputBorder,
+                                    color: Color(0xff2699FB)),
+                                border: Design.myInputBorder,
+                                enabledBorder: Design.myInputBorder,
+                                focusedBorder: Design.myInputBorder,
                                 labelText: 'Location',
                                 labelStyle: TextStyle(
                                     color: Color(0xffBCE0FD), fontSize: 16),

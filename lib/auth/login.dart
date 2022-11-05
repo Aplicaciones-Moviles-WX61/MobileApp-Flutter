@@ -5,7 +5,10 @@ import 'package:nextparty/auth/forgot_password.dart';
 import 'package:nextparty/auth/register.dart';
 import 'package:nextparty/index.dart';
 import 'package:nextparty/services/user_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Models/user.dart';
+import '../common/desing.dart';
+import '../preferences/preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -16,13 +19,7 @@ class Login extends StatefulWidget {
 class LoginStateful extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   userService auth = userService();
-
-  static const OutlineInputBorder myInputBorder = OutlineInputBorder(
-      borderSide: BorderSide(
-    color: Color(0xffBCE0FD),
-  ));
 
   initState() {
     super.initState();
@@ -36,18 +33,15 @@ class LoginStateful extends State<Login> {
     });
   }
 
-  authLogin(email, password) async {
+  login(email, password) async {
     var user = await auth.AuthUser(email, password);
     if (user != null) {
       Map<String, dynamic> body = jsonDecode(user);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', body['token']);
-      prefs.setString('id', jsonEncode(body['user']['id']));
-      prefs.setString('email', jsonEncode(body['user']['email']));
-      prefs.setString('name', jsonEncode(body['user']['name']));
-      prefs.setString('lastname', jsonEncode(body['user']['lastname']));
-      prefs.setString('phone', jsonEncode(body['user']['phone']));
-      prefs.setString('birthday', jsonEncode(body['user']['birthday']));
+      Preferences prefs = Preferences();
+      await prefs.init();
+      await prefs.saveToken(body['token']);
+      User _user = User.fromJson(body['user']);
+      await prefs.saveUser(_user);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Index()),
@@ -121,9 +115,9 @@ class LoginStateful extends State<Login> {
                         controller: emailController,
                         style: const TextStyle(color: Color(0xff2699FB)),
                         decoration: const InputDecoration(
-                            border: myInputBorder,
-                            enabledBorder: myInputBorder,
-                            focusedBorder: myInputBorder,
+                            border: Design.myInputBorder,
+                            enabledBorder: Design.myInputBorder,
+                            focusedBorder: Design.myInputBorder,
                             prefixIcon:
                                 Icon(Icons.email, color: Color(0xff2699FB)),
                             hintText: 'Email',
@@ -138,9 +132,9 @@ class LoginStateful extends State<Login> {
                         style: const TextStyle(color: Color(0xff2699FB)),
                         obscureText: true,
                         decoration: const InputDecoration(
-                            border: myInputBorder,
-                            enabledBorder: myInputBorder,
-                            focusedBorder: myInputBorder,
+                            border: Design.myInputBorder,
+                            enabledBorder: Design.myInputBorder,
+                            focusedBorder: Design.myInputBorder,
                             prefixIcon:
                                 Icon(Icons.lock, color: Color(0xff2699FB)),
                             hintText: 'Password',
@@ -154,7 +148,7 @@ class LoginStateful extends State<Login> {
                         child: ElevatedButton(
                           child: const Text('Login'),
                           onPressed: () {
-                            authLogin(
+                            login(
                                 emailController.text, passwordController.text);
                           },
                         )),

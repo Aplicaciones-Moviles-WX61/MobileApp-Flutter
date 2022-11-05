@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nextparty/auth/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:nextparty/preferences/preferences.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -11,14 +11,9 @@ class Settings extends StatefulWidget {
 
 class SettingsStateful extends State<Settings> {
   Future<void> logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('token');
-    prefs.remove('id');
-    prefs.remove('email');
-    prefs.remove('name');
-    prefs.remove('lastname');
-    prefs.remove('phone');
-    prefs.remove('birthday');
+    Preferences prefs = Preferences();
+    await prefs.init();
+    prefs.deleteSession();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => Login()),

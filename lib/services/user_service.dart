@@ -1,8 +1,8 @@
 import 'dart:convert';
-import '../ApiConstans.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../common/apiConstans.dart';
 import 'package:http/http.dart' as http;
 import 'package:nextparty/models/user.dart';
+import 'package:nextparty/preferences/preferences.dart';
 
 class registerDto {
   String name;
@@ -43,20 +43,21 @@ class userService {
   }
 
   Future<bool> isLogged() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
-    if (token != null) {
+    Preferences prefs = Preferences();
+    await prefs.init();
+    var token = await prefs.getToken();
+    if (token != '') {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   Future<User> getUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
-    var id = prefs.getString('id');
-    var response = await http.get(Uri.parse(ApiConstans.user + id!),
+    Preferences prefs = Preferences();
+    await prefs.init();
+    var token = await prefs.getToken();
+    var id = await prefs.getId();
+    var response = await http.get(Uri.parse(ApiConstans.user + id.toString()),
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       return User.fromJson(jsonDecode(response.body));

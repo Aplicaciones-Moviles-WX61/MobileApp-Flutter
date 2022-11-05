@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nextparty/menu/create_party.dart';
-import 'package:nextparty/menu/parties.dart';
+import 'package:nextparty/menu/partiesList.dart';
 import 'package:nextparty/menu/profile.dart';
 import 'package:nextparty/menu/settings.dart';
 import 'package:nextparty/menu/search.dart';
@@ -13,60 +13,10 @@ class Party extends StatefulWidget {
 }
 
 class PartyStateful extends State<Party> {
-  int _selectedIndex = 0;
-  static const List<Widget> _pages = <Widget>[
-    CreateParty(),
-    Parties(),
-    Search(),
-    Profile(),
-    Settings()
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box, color: Colors.white70),
-            activeIcon: Icon(Icons.add_box, color: Colors.white),
-            backgroundColor: Color(0xff2699FB),
-            label: 'Create Party',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt, color: Colors.white70),
-            activeIcon: Icon(Icons.list_alt, color: Colors.white),
-            backgroundColor: Color(0xff2699FB),
-            label: 'Notifications',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search, color: Colors.white70),
-            activeIcon: Icon(Icons.search, color: Colors.white),
-            backgroundColor: Color(0xff2699FB),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, color: Colors.white70),
-            activeIcon: Icon(Icons.person, color: Colors.white),
-            backgroundColor: Color(0xff2699FB),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings, color: Colors.white70),
-            activeIcon: Icon(Icons.settings, color: Colors.white),
-            backgroundColor: Color(0xff2699FB),
-            label: 'Settings',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
-        showSelectedLabels: false,
-        onTap: (int id) {
-          setState(() {
-            _selectedIndex = id;
-          });
-        },
-      ),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -144,9 +94,11 @@ class PartyStateful extends State<Party> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Wishlist',
+                      Text('My Wishlist',
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold))
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff2699FB)))
                     ],
                   )),
               Container(
@@ -155,18 +107,17 @@ class PartyStateful extends State<Party> {
                   padding: EdgeInsets.only(left: 25, right: 25),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Color(0xff2699FB),
-                      borderRadius: BorderRadius.circular(25),
+                      color: Color(0xffBCE0FD),
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    padding: EdgeInsets.only(left: 20, top: 15, bottom: 15),
+                    padding: EdgeInsets.only(left: 20, top: 10, bottom: 10),
                     child: Row(
                       children: [
                         Container(
                           width: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
+                          decoration: const BoxDecoration(
                               image: DecorationImage(
-                                  fit: BoxFit.cover,
+                                  // fit: BoxFit.cover,
                                   image:
                                       AssetImage('assets/products/ron.png'))),
                         ),
@@ -175,7 +126,7 @@ class PartyStateful extends State<Party> {
                           child: Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text(
                                   'Ron Cartavio (1L)',
                                   style: TextStyle(
@@ -196,110 +147,11 @@ class PartyStateful extends State<Party> {
                           ),
                         ),
                         Container(
-                            //iconos
+                            //icons
                             )
                       ],
                     ),
                   )),
-              Container(
-                height: 100,
-                margin: EdgeInsets.only(bottom: 10, top: 10),
-                padding: EdgeInsets.only(left: 25, right: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xff2699FB),
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  padding: EdgeInsets.only(left: 20, top: 15, bottom: 15),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage(
-                                    'assets/products/cocacola.jpg'))),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Coca Cola  (2.25L)',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                              SizedBox(height: 5),
-                              Text(
-                                'Cantidad:   5 unidades',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                  height: 100,
-                  margin: EdgeInsets.only(bottom: 5, top: 5),
-                  padding: EdgeInsets.only(left: 25, right: 25),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xff2699FB),
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    padding: EdgeInsets.only(left: 20, top: 15, bottom: 15),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image:
-                                      AssetImage('assets/products/hielo.png'))),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Hielo gourmet (2kg)',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                                SizedBox(height: 5),
-                                Text(
-                                  'Cantidad:   10 kg',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ))
             ],
           ),
         ),
