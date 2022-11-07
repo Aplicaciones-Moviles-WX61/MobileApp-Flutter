@@ -178,7 +178,7 @@ class PartyStateful extends State<Party> {
           FloatingActionButton(
             backgroundColor: Color(0xff2699FB),
             onPressed: () {
-              //OpenGuestsList();
+              OpenGuestsList();
             },
             tooltip: 'Lista de invitados',
             child: const Icon(Icons.groups),
@@ -202,6 +202,7 @@ class PartyStateful extends State<Party> {
             ),),
           ),
           content: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               const Padding(
                 padding:
@@ -302,6 +303,61 @@ class PartyStateful extends State<Party> {
           ],
         );
       });
+
+  Future OpenGuestsList () => showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Center(
+          child: Text('Guests List', style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xff2699FB),
+            ),
+          ),
+        ),
+
+
+
+        content: buildView(context),
+
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel')),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Save')),
+        ],
+
+      );
+    }
+  );
+
+  Widget buildView(BuildContext context) {
+    return Container(
+      width: 500,
+      height: 500,
+      child:
+        ListView.builder(
+          itemCount: 3,
+          itemBuilder: (context, index) {
+            return ListTile(
+              title: Text('Jose Gustavo'),
+              subtitle: Text('Primo'),
+              trailing: Icon(Icons.cancel_outlined),
+            );
+          },
+        ),
+
+    );
+  }
+
 }
+
 
 
