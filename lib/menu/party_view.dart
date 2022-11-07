@@ -5,6 +5,8 @@ import 'package:nextparty/menu/profile.dart';
 import 'package:nextparty/menu/settings.dart';
 import 'package:nextparty/menu/search.dart';
 
+import 'package:nextparty/common/desing.dart';
+
 class Party extends StatefulWidget {
   const Party({super.key});
 
@@ -150,12 +152,156 @@ class PartyStateful extends State<Party> {
                             //icons
                             )
                       ],
+
                     ),
                   )),
             ],
           ),
         ),
       ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+
+          Padding(
+            padding: const EdgeInsets.only(bottom: 500),
+            child: FloatingActionButton(
+              backgroundColor: Color(0xff2699FB),
+              onPressed: () {
+                OpenEditInfo();
+              },
+              tooltip: 'Editar Party',
+              child: const Icon(Icons.edit),
+            ),
+          ),
+
+          FloatingActionButton(
+            backgroundColor: Color(0xff2699FB),
+            onPressed: () {
+              //OpenGuestsList();
+            },
+            tooltip: 'Lista de invitados',
+            child: const Icon(Icons.groups),
+          ),
+
+        ],
+
+      ),
+
     );
   }
+  Future OpenEditInfo() => showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(
+            child: Text('Edit Party', style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff2699FB)
+            ),),
+          ),
+          content: Column(
+            children: [
+              const Padding(
+                padding:
+                EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                child: TextField(
+                  style: TextStyle(color: Color(0xff2699FB)),
+                  //controller: partyNameController,
+                  decoration: InputDecoration(
+                    prefixIcon:
+                    Icon(Icons.cake, color: Color(0xff2699FB)),
+                    border: Design.myInputBorder,
+                    enabledBorder: Design.myInputBorder,
+                    focusedBorder: Design.myInputBorder,
+                    labelText: 'Name of the event',
+                    labelStyle: TextStyle(
+                        color: Color(0xffBCE0FD), fontSize: 16),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding:
+                EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                child: TextField(
+                  style: TextStyle(color: Color(0xff2699FB)),
+                  //controller: partyDescriptionController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.description,
+                        color: Color(0xff2699FB)),
+                    border: Design.myInputBorder,
+                    enabledBorder: Design.myInputBorder,
+                    focusedBorder: Design.myInputBorder,
+                    labelText: 'Add a description',
+                    labelStyle: TextStyle(
+                        color: Color(0xffBCE0FD), fontSize: 16),
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                child: TextField(
+                  style: const TextStyle(color: Color(0xff2699FB)),
+                  //controller: dateController,
+                  readOnly: true,
+                  decoration: const InputDecoration(
+                    border: Design.myInputBorder,
+                    enabledBorder: Design.myInputBorder,
+                    focusedBorder: Design.myInputBorder,
+                    prefixIcon: Icon(Icons.calendar_today,
+                        color: Color(0xff2699FB)),
+                    labelText: 'Date',
+                    labelStyle: TextStyle(
+                        color: Color(0xffBCE0FD), fontSize: 16),
+                  ),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1910),
+                        lastDate: DateTime(2101));
+                    //dateController.text = DateFormat('yyyy-MM-dd')
+                        //.format(pickedDate!)
+                        //.toString();
+                  },
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10.0, 0, 0),
+                child: TextField(
+                  style: TextStyle(color: Color(0xff2699FB)),
+                  //controller: locationController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.location_on,
+                        color: Color(0xff2699FB)),
+                    border: Design.myInputBorder,
+                    enabledBorder: Design.myInputBorder,
+                    focusedBorder: Design.myInputBorder,
+                    labelText: 'Location',
+                    labelStyle: TextStyle(
+                        color: Color(0xffBCE0FD), fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel')),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Save')),
+          ],
+        );
+      });
 }
+
+
