@@ -1,15 +1,45 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nextparty/common/desing.dart';
+import 'package:nextparty/services/items_service.dart';
+import '../models/item.dart';
+import '../models/party.dart';
+import '../services/wishlist_service.dart';
 import 'item_detail.dart';
+import 'package:nextparty/models/wishlist.dart';
 
-class PartyView extends StatefulWidget {
-  const PartyView({super.key});
-
+class PartyDetail extends StatefulWidget {
+  PartyDetail({super.key, required this.party});
+  final Party party;
   @override
-  State<PartyView> createState() => PartyStateful();
+  State<PartyDetail> createState() => PartyView(this.party);
 }
 
-class PartyStateful extends State<PartyView> {
+class PartyView extends State<PartyDetail> {
+  TextEditingController wishlistNameController = TextEditingController();
+
+  TextEditingController itemNameController = TextEditingController();
+  TextEditingController itemDescriptionController = TextEditingController();
+  TextEditingController itemQuantityController = TextEditingController();
+
+  late Party _party;
+  Wishlist _wishlist = Wishlist(description: '');
+  List<Item> _items = [];
+  PartyView(Party party) {
+    _party = party;
+    var x = WishlistService().getWishlist(_party.id!);
+    x.then((value) => setState(() {
+          _wishlist = Wishlist.fromJson(jsonDecode(value!));
+        }));
+    var y = ItemsService().getItems(_party.id!);
+    y.then((value) => setState(() {
+          _items = (jsonDecode(value!) as List)
+              .map((i) => Item.fromJson(i))
+              .toList();
+        }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,10 +61,10 @@ class PartyStateful extends State<PartyView> {
           },
         ),
         centerTitle: true,
-        title: const Text(
-          'PARTIES',
+        title: Text(
+          _party.name,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Color(0xff2699FB),
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -47,37 +77,41 @@ class PartyStateful extends State<PartyView> {
             children: [
               Container(
                 width: double.infinity,
-                decoration: BoxDecoration(color: Color(0xff2699FB)),
+                decoration: const BoxDecoration(color: Color(0xff2699FB)),
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
-                        '29/10/2022',
-                        style: TextStyle(
+                        DateFormat('dd/MM/yyyy')
+                            .format(DateTime.parse(_party.date!))
+                            .toString(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 15,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
-                        'Fiesta de Jhon',
-                        style: TextStyle(color: Colors.white, fontSize: 30),
+                        _party.name,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 30),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
-                        'Las Adelfas Mz B 16, Surco 15023',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                        _party.location!,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 15),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                     ],
@@ -85,89 +119,12 @@ class PartyStateful extends State<PartyView> {
                 ),
               ),
               Container(
-                  //aca te quedaste
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(
-                      bottom: 10, top: 10, left: 10, right: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text('My Wishlist',
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xff2699FB),)),
-                          TextButton(
-                              onPressed: () {
-                                Add_Item();
-                              },
-                              child: const Icon(Icons.add_shopping_cart, size: 30.0)),
-
-                        ],
-                      )
-                    ],
-                  )),
-              Container(
-                  height: 100,
-                  margin: EdgeInsets.only(bottom: 5, top: 5),
-                  padding: EdgeInsets.only(left: 25, right: 25),
-                  child: InkWell(
-                      child: Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xffBCE0FD),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding:
-                              EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 50,
-                                decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        // fit: BoxFit.cover,
-                                        image: AssetImage(
-                                            'assets/products/ron.png'))),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Container(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        'Ron Cartavio (1L)',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        'Cantidad:   3 unidades',
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                  //icons
-                                  )
-                            ],
-                          )),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ItemDetail()));
-                      })),
+                width: double.infinity,
+                padding: const EdgeInsets.only(
+                    bottom: 20, top: 20, left: 15, right: 15),
+                child: wishlistWidget(context),
+              ),
+              itemsList(_items),
             ],
           ),
         ),
@@ -175,21 +132,23 @@ class PartyStateful extends State<PartyView> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 500),
-            child: FloatingActionButton(
-              backgroundColor: Color(0xff2699FB),
-              onPressed: () {
-                OpenEditInfo();
-              },
-              tooltip: 'Editar Party',
-              child: const Icon(Icons.edit),
-            ),
+          FloatingActionButton(
+            heroTag: 'Editar Evento',
+            backgroundColor: Colors.white,
+            onPressed: () {
+              openEditInfo(context);
+            },
+            tooltip: 'Editar Evento',
+            child: const Icon(Icons.edit, color: Color(0xff2699FB)),
+          ),
+          const SizedBox(
+            height: 600,
           ),
           FloatingActionButton(
-            backgroundColor: Color(0xff2699FB),
+            heroTag: 'Listar Invitados',
+            backgroundColor: const Color(0xff2699FB),
             onPressed: () {
-              OpenGuestsList();
+              openGuestsList(context);
             },
             tooltip: 'Lista de invitados',
             child: const Icon(Icons.groups),
@@ -199,8 +158,8 @@ class PartyStateful extends State<PartyView> {
     );
   }
 
-  Future OpenEditInfo() => showDialog(
-      context: context,
+  Future openEditInfo(BuildContext _context) => showDialog(
+      context: _context,
       builder: (context) {
         return AlertDialog(
           title: const Center(
@@ -300,18 +259,18 @@ class PartyStateful extends State<PartyView> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Cancel')),
+                child: const Text('Cancel')),
             TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Save')),
+                child: const Text('Save')),
           ],
         );
       });
 
-      Future Add_Item() => showDialog(
-      context: context,
+  Future addItem(BuildContext _context) => showDialog(
+      context: _context,
       builder: (context) {
         return AlertDialog(
           title: const Center(
@@ -326,53 +285,53 @@ class PartyStateful extends State<PartyView> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
                   style: TextStyle(color: Color(0xff2699FB)),
-                  //controller: partyNameController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.assessment_outlined, color: Color(0xff2699FB)),
+                  controller: itemNameController,
+                  decoration: const InputDecoration(
+                    prefixIcon:
+                        Icon(Icons.card_giftcard, color: Color(0xff2699FB)),
                     border: Design.myInputBorder,
                     enabledBorder: Design.myInputBorder,
                     focusedBorder: Design.myInputBorder,
-                    labelText: 'Name of the product',
+                    labelText: 'Product Name',
                     labelStyle:
-                    TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
+                        TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
                   ),
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
                   style: TextStyle(color: Color(0xff2699FB)),
-                  //controller: partyDescriptionController,
-                  decoration: InputDecoration(
+                  controller: itemDescriptionController,
+                  decoration: const InputDecoration(
                     prefixIcon:
-                    Icon(Icons.description, color: Color(0xff2699FB)),
+                        Icon(Icons.description, color: Color(0xff2699FB)),
                     border: Design.myInputBorder,
                     enabledBorder: Design.myInputBorder,
                     focusedBorder: Design.myInputBorder,
-                    labelText: 'Add a description',
+                    labelText: 'Description',
                     labelStyle:
-                    TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
+                        TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
                   ),
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
                   style: TextStyle(color: Color(0xff2699FB)),
-                  //controller: partyDescriptionController,
-                  decoration: InputDecoration(
-                    prefixIcon:
-                    Icon(Icons.production_quantity_limits, color: Color(0xff2699FB)),
+                  controller: itemQuantityController,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.numbers, color: Color(0xff2699FB)),
                     border: Design.myInputBorder,
                     enabledBorder: Design.myInputBorder,
                     focusedBorder: Design.myInputBorder,
-                    labelText: 'enter quantity',
+                    labelText: 'Quantity',
                     labelStyle:
-                    TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
+                        TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
                   ),
                 ),
               ),
@@ -386,6 +345,16 @@ class PartyStateful extends State<PartyView> {
                 child: Text('Cancel')),
             TextButton(
                 onPressed: () {
+                  AddItemDto item = AddItemDto(
+                    name: itemNameController.text,
+                    description: itemDescriptionController.text,
+                    quantity: int.parse(itemQuantityController.text),
+                    category_id: 1,
+                  );
+                  var result = ItemsService().addItem(_party.id!, item);
+                  result.then((value) => {
+                        if (value != null) {Navigator.of(context).pop()}
+                      });
                   Navigator.of(context).pop();
                 },
                 child: Text('Save')),
@@ -393,11 +362,11 @@ class PartyStateful extends State<PartyView> {
         );
       });
 
-  Future OpenGuestsList() => showDialog(
-      context: context,
+  Future openGuestsList(BuildContext _context) => showDialog(
+      context: _context,
       builder: (context) {
         return AlertDialog(
-          title: Center(
+          title: const Center(
             child: Text(
               'Guests List',
               style: TextStyle(
@@ -407,30 +376,83 @@ class PartyStateful extends State<PartyView> {
               ),
             ),
           ),
-          content: buildView(context),
+          content: guestList(context),
           actions: [
             TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Cancel')),
+                child: const Text('Cancel')),
             TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Save')),
+                child: const Text('Save')),
           ],
         );
       });
 
-  Widget buildView(BuildContext context) {
+  Future openCreateWishlist(BuildContext _context, int id) => showDialog(
+      context: _context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(
+            child: Text(
+              'Add Wishlist to the Party',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color(0xff2699FB),
+              ),
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                style: TextStyle(color: Color(0xff2699FB)),
+                controller: wishlistNameController,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.description, color: Color(0xff2699FB)),
+                  border: Design.myInputBorder,
+                  enabledBorder: Design.myInputBorder,
+                  focusedBorder: Design.myInputBorder,
+                  labelText: 'Description',
+                  labelStyle: TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Cancel')),
+            TextButton(
+                onPressed: () {
+                  Wishlist pushWishlist =
+                      Wishlist(description: wishlistNameController.text);
+                  var response =
+                      WishlistService().addWishlist(id, pushWishlist);
+                  response.then((value) => {
+                        print(value),
+                      });
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Save')),
+          ],
+        );
+      });
+
+  Widget guestList(BuildContext context) {
     return Container(
       width: 500,
       height: 500,
       child: ListView.builder(
         itemCount: 3,
         itemBuilder: (context, index) {
-          return ListTile(
+          return const ListTile(
             title: Text('Jose Gustavo'),
             subtitle: Text('Primo'),
             trailing: Icon(Icons.cancel_outlined),
@@ -438,5 +460,96 @@ class PartyStateful extends State<PartyView> {
         },
       ),
     );
+  }
+
+  Widget wishlistWidget(BuildContext _context) {
+    if (_wishlist.id != null) {
+      return (Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const Text('My Wishlist',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff2699FB),
+                )),
+            Text(_wishlist.description,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Color(0xff2699FB),
+                )),
+          ]),
+          TextButton(
+              onPressed: () {
+                addItem(context);
+              },
+              child: const Icon(Icons.add_circle, size: 30.0)),
+        ],
+      ));
+    }
+    return (Center(
+      child: Column(
+        children: [
+          IconButton(
+            icon: const Icon(Icons.add_circle, color: Color(0xff2699FB)),
+            iconSize: 50,
+            onPressed: () {
+              openCreateWishlist(_context, _party.id!);
+            },
+          ),
+          const Text('Add Wishlist',
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xff2699FB),
+              )),
+        ],
+      ),
+    ));
+  }
+
+  Widget itemsList(List<Item> items) {
+    return (ListView.builder(
+      itemCount: items.length,
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        Item item = items[index];
+        return Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ItemDetail()));
+                },
+                title: Text(
+                  item.name,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff2699FB),
+                  ),
+                ),
+                subtitle: Text(
+                  item.description,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Color(0xff2699FB),
+                  ),
+                ),
+                trailing: Text(
+                  item.quantity.toString(),
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Color(0xff2699FB),
+                  ),
+                ),
+              ),
+            ));
+      },
+    ));
   }
 }

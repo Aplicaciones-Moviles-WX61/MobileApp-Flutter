@@ -19,7 +19,7 @@ class Login extends StatefulWidget {
 class LoginStateful extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  userService auth = userService();
+  UserService auth = UserService();
 
   initState() {
     super.initState();

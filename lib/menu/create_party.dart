@@ -12,7 +12,7 @@ class CreateParty extends StatefulWidget {
 }
 
 class CreatePartyStateful extends State<CreateParty> {
-  partyService service = partyService();
+  PartyService service = PartyService();
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   TextEditingController partyNameController = TextEditingController();

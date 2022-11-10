@@ -15,7 +15,7 @@ class Register extends StatefulWidget {
 }
 
 class RegisterStateful extends State<Register> {
-  userService auth = userService();
+  UserService auth = UserService();
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();

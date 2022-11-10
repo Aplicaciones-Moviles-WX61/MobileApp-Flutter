@@ -26,7 +26,7 @@ class PartyDto {
       };
 }
 
-class partyService {
+class PartyService {
   Future<String?> getParties() async {
     // static Future<List<Party>> getParties() async {
     Preferences prefs = Preferences();

@@ -25,7 +25,7 @@ class ProfileStateful extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    var user = userService().getUser();
+    var user = UserService().getUser();
     user.then((value) {
       nameController.text = value.name;
       lastNameController.text = value.lastname;

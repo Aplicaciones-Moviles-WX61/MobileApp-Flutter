@@ -4,6 +4,8 @@ class ApiConstans {
   static const String register = base + "auth/register";
   static const String user = base + "users/";
   static const String parties = base + "parties";
+  static const String wishlist = base + "party";
+  static const String items = base + "items";
 
   getCreatePartyUrl(int userId) {
     return user + userId.toString() + "/party";
@@ -11,5 +13,17 @@ class ApiConstans {
 
   getPartiesOfUserUrl(int userId) {
     return parties + "/user/" + userId.toString();
+  }
+
+  getWishlistUrl(int partyId) {
+    return wishlist + "/" + partyId.toString() + "/wishlist";
+  }
+
+  addWishlistUrl(int partyId) {
+    return wishlist + "/" + partyId.toString() + "/wishlist/create";
+  }
+
+  itemsUrl(int partyId) {
+    return wishlist + "/" + partyId.toString() + "/items";
   }
 }

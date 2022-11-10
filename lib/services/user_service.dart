@@ -30,7 +30,7 @@ class registerDto {
       };
 }
 
-class userService {
+class UserService {
   Future<String?> AuthUser(email, password) async {
     // login
     var response = await http.post(Uri.parse(ApiConstans.login),

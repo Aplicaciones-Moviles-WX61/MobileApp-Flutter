@@ -18,7 +18,7 @@ class PartiesStateful extends State<Parties> {
   @override
   void initState() {
     super.initState();
-    var x = partyService().getParties();
+    var x = PartyService().getParties();
     x.then((value) => setState(() {
           jsonDecode(value!).forEach((element) {
             parties.add(Party.fromJson(element));
@@ -92,13 +92,13 @@ class PartiesStateful extends State<Parties> {
                                   style: const TextStyle(
                                       fontSize: 16, color: Color(0xff2699FB)),
                                 ),
-                                onTap: () {
+                                onTap: () async {
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
+                                      context,
+                                      MaterialPageRoute(
                                         builder: (context) =>
-                                            const PartyView()),
-                                  );
+                                            PartyDetail(party: parties[index]),
+                                      ));
                                 },
                               ),
                             ),
