@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nextparty/common/desing.dart';
 import 'package:nextparty/services/items_service.dart';
+import 'package:nextparty/services/party_service.dart';
+import '../Models/user.dart';
 import '../models/item.dart';
 import '../models/party.dart';
 import '../services/wishlist_service.dart';
@@ -23,9 +25,17 @@ class PartyView extends State<PartyDetail> {
   TextEditingController itemDescriptionController = TextEditingController();
   TextEditingController itemQuantityController = TextEditingController();
 
+  TextEditingController partyNameController = TextEditingController();
+  TextEditingController partyDescriptionController = TextEditingController();
+  TextEditingController partyDateController = TextEditingController();
+  TextEditingController partyLocationController = TextEditingController();
+
+  TextEditingController guestEmailController = TextEditingController();
+
   late Party _party;
   Wishlist _wishlist = Wishlist(description: '');
   List<Item> _items = [];
+  List<User> _guests = [];
   PartyView(Party party) {
     _party = party;
     var x = WishlistService().getWishlist(_party.id!);
@@ -36,6 +46,12 @@ class PartyView extends State<PartyDetail> {
     y.then((value) => setState(() {
           _items = (jsonDecode(value!) as List)
               .map((i) => Item.fromJson(i))
+              .toList();
+        }));
+    var z = PartyService().getGuests(_party.id!);
+    z.then((value) => setState(() {
+          _guests = (jsonDecode(value!) as List)
+              .map((i) => User.fromJson(i))
               .toList();
         }));
   }
@@ -174,12 +190,12 @@ class PartyView extends State<PartyDetail> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
                   style: TextStyle(color: Color(0xff2699FB)),
-                  //controller: partyNameController,
-                  decoration: InputDecoration(
+                  controller: partyNameController,
+                  decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.cake, color: Color(0xff2699FB)),
                     border: Design.myInputBorder,
                     enabledBorder: Design.myInputBorder,
@@ -190,12 +206,12 @@ class PartyView extends State<PartyDetail> {
                   ),
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
                   style: TextStyle(color: Color(0xff2699FB)),
-                  //controller: partyDescriptionController,
-                  decoration: InputDecoration(
+                  controller: partyDescriptionController,
+                  decoration: const InputDecoration(
                     prefixIcon:
                         Icon(Icons.description, color: Color(0xff2699FB)),
                     border: Design.myInputBorder,
@@ -211,7 +227,7 @@ class PartyView extends State<PartyDetail> {
                 padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
                   style: const TextStyle(color: Color(0xff2699FB)),
-                  //controller: dateController,
+                  controller: partyDateController,
                   readOnly: true,
                   decoration: const InputDecoration(
                     border: Design.myInputBorder,
@@ -229,18 +245,17 @@ class PartyView extends State<PartyDetail> {
                         initialDate: DateTime.now(),
                         firstDate: DateTime(1910),
                         lastDate: DateTime(2101));
-                    //dateController.text = DateFormat('yyyy-MM-dd')
-                    //.format(pickedDate!)
-                    //.toString();
+                    partyDateController.text =
+                        DateFormat('yyyy-MM-dd').format(pickedDate!).toString();
                   },
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.fromLTRB(0, 10.0, 0, 0),
                 child: TextField(
                   style: TextStyle(color: Color(0xff2699FB)),
-                  //controller: locationController,
-                  decoration: InputDecoration(
+                  controller: partyLocationController,
+                  decoration: const InputDecoration(
                     prefixIcon:
                         Icon(Icons.location_on, color: Color(0xff2699FB)),
                     border: Design.myInputBorder,
@@ -262,6 +277,18 @@ class PartyView extends State<PartyDetail> {
                 child: const Text('Cancel')),
             TextButton(
                 onPressed: () {
+                  var pushParty = PartyDto(
+                      name: partyNameController.text,
+                      description: partyDescriptionController.text,
+                      date: partyDateController.text,
+                      location: partyDateController.text);
+                  var x = PartyService().updateParty(_party.id!, pushParty);
+                  x.then((value) {
+                    setState(() {
+                      print(value);
+                      Navigator.of(context).pop();
+                    });
+                  });
                   Navigator.of(context).pop();
                 },
                 child: const Text('Save')),
@@ -366,14 +393,55 @@ class PartyView extends State<PartyDetail> {
       context: _context,
       builder: (context) {
         return AlertDialog(
-          title: const Center(
-            child: Text(
-              'Guests List',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Color(0xff2699FB),
-              ),
+          title: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Guests List',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff2699FB),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                    style: TextStyle(color: Color(0xff2699FB)),
+                    controller: guestEmailController,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.person, color: Color(0xff2699FB)),
+                      border: Design.myInputBorder,
+                      enabledBorder: Design.myInputBorder,
+                      focusedBorder: Design.myInputBorder,
+                      labelText: 'Email',
+                      labelStyle:
+                          TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
+                    )),
+                Container(
+                    height: 50,
+                    width: double.infinity,
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: ElevatedButton(
+                      child: const Text('Add Guest'),
+                      onPressed: () {
+                        var pushGuest =
+                            InviteDto(email: guestEmailController.text);
+                        var x =
+                            PartyService().inviteGuest(_party.id!, pushGuest);
+                        x.then(
+                          (value) => () {
+                            if (value == true) {
+                              print("SISSSSSSSSSSSSSSSS");
+                              Navigator.of(context).pop();
+                            }
+                          },
+                        );
+                      },
+                    )),
+              ],
             ),
           ),
           content: guestList(context),
@@ -382,12 +450,7 @@ class PartyView extends State<PartyDetail> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text('Cancel')),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Save')),
+                child: const Text('Close')),
           ],
         );
       });
@@ -448,14 +511,14 @@ class PartyView extends State<PartyDetail> {
   Widget guestList(BuildContext context) {
     return Container(
       width: 500,
-      height: 500,
+      // height: 500,
       child: ListView.builder(
-        itemCount: 3,
+        itemCount: _guests.length,
         itemBuilder: (context, index) {
-          return const ListTile(
-            title: Text('Jose Gustavo'),
-            subtitle: Text('Primo'),
-            trailing: Icon(Icons.cancel_outlined),
+          User guest = _guests[index];
+          return ListTile(
+            title: Text('${guest.name} ${guest.lastname}'),
+            subtitle: Text(guest.email),
           );
         },
       ),

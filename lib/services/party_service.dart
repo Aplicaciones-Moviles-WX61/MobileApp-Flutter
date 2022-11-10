@@ -26,6 +26,16 @@ class PartyDto {
       };
 }
 
+class InviteDto {
+  String email;
+
+  InviteDto({required this.email});
+
+  Map<String, dynamic> toJson() => {
+        "email": email,
+      };
+}
+
 class PartyService {
   Future<String?> getParties() async {
     // static Future<List<Party>> getParties() async {
@@ -65,6 +75,56 @@ class PartyService {
       return response.body;
     } else {
       return null;
+    }
+  }
+
+  Future<String?> updateParty(int id, PartyDto party) async {
+    Preferences prefs = Preferences();
+    await prefs.init();
+    var token = await prefs.getToken();
+    var response =
+        await http.put(Uri.parse(ApiConstans().getPartyUrl(id)), headers: {
+      "Authorization": "Bearer $token"
+    }, body: {
+      "name": party.name,
+      "description": party.description,
+      "date": party.date,
+      "location": party.location
+    });
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      return null;
+    }
+  }
+
+  Future<String?> getGuests(int id) async {
+    Preferences prefs = Preferences();
+    await prefs.init();
+    var token = await prefs.getToken();
+    var response = await http.get(Uri.parse(ApiConstans().getGuestsUrl(id)),
+        headers: {"Authorization": "Bearer $token"});
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      return null;
+    }
+  }
+
+  Future<bool> inviteGuest(int id, InviteDto invite) async {
+    Preferences prefs = Preferences();
+    await prefs.init();
+    var token = await prefs.getToken();
+    var response =
+        await http.post(Uri.parse(ApiConstans().inviteGuestUrl(id)), headers: {
+      "Authorization": "Bearer $token"
+    }, body: {
+      "email": invite.email,
+    });
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

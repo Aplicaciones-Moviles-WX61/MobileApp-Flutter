@@ -26,4 +26,16 @@ class ApiConstans {
   itemsUrl(int partyId) {
     return wishlist + "/" + partyId.toString() + "/items";
   }
+
+  getPartyUrl(int partyId) {
+    return parties + "/" + partyId.toString();
+  }
+
+  getGuestsUrl(int partyId) {
+    return parties + "/" + partyId.toString() + "/guests";
+  }
+
+  inviteGuestUrl(int partyId) {
+    return parties + "/" + partyId.toString() + "/invite";
+  }
 }
