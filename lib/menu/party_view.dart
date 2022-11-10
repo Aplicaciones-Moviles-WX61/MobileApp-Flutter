@@ -92,11 +92,21 @@ class PartyStateful extends State<PartyView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('My Wishlist',
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xff2699FB)))
+                      Row(
+                        children: [
+                          Text('My Wishlist',
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff2699FB),)),
+                          TextButton(
+                              onPressed: () {
+                                Add_Item();
+                              },
+                              child: const Icon(Icons.add_shopping_cart, size: 30.0)),
+
+                        ],
+                      )
                     ],
                   )),
               Container(
@@ -280,6 +290,89 @@ class PartyStateful extends State<PartyView> {
                     labelText: 'Location',
                     labelStyle:
                         TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel')),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Save')),
+          ],
+        );
+      });
+
+      Future Add_Item() => showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(
+            child: Text(
+              'Add Item',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff2699FB)),
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                child: TextField(
+                  style: TextStyle(color: Color(0xff2699FB)),
+                  //controller: partyNameController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.assessment_outlined, color: Color(0xff2699FB)),
+                    border: Design.myInputBorder,
+                    enabledBorder: Design.myInputBorder,
+                    focusedBorder: Design.myInputBorder,
+                    labelText: 'Name of the product',
+                    labelStyle:
+                    TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                child: TextField(
+                  style: TextStyle(color: Color(0xff2699FB)),
+                  //controller: partyDescriptionController,
+                  decoration: InputDecoration(
+                    prefixIcon:
+                    Icon(Icons.description, color: Color(0xff2699FB)),
+                    border: Design.myInputBorder,
+                    enabledBorder: Design.myInputBorder,
+                    focusedBorder: Design.myInputBorder,
+                    labelText: 'Add a description',
+                    labelStyle:
+                    TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                child: TextField(
+                  style: TextStyle(color: Color(0xff2699FB)),
+                  //controller: partyDescriptionController,
+                  decoration: InputDecoration(
+                    prefixIcon:
+                    Icon(Icons.production_quantity_limits, color: Color(0xff2699FB)),
+                    border: Design.myInputBorder,
+                    enabledBorder: Design.myInputBorder,
+                    focusedBorder: Design.myInputBorder,
+                    labelText: 'enter quantity',
+                    labelStyle:
+                    TextStyle(color: Color(0xffBCE0FD), fontSize: 16),
                   ),
                 ),
               ),
