@@ -10,6 +10,10 @@ class Profile extends StatefulWidget {
   State<Profile> createState() => ProfileStateful();
 }
 
+formatDate(DateTime date) {
+  return DateFormat('dd-MM-yyyy').format(date).toString();
+}
+
 class ProfileStateful extends State<Profile> {
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -27,7 +31,7 @@ class ProfileStateful extends State<Profile> {
       lastNameController.text = value.lastname;
       emailController.text = value.email;
       phoneController.text = value.phone!;
-      dateController.text = value.birthday as String;
+      dateController.text = formatDate(value.birthday!);
     });
   }
 

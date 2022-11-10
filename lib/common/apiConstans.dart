@@ -3,5 +3,13 @@ class ApiConstans {
   static const String login = base + "auth/login";
   static const String register = base + "auth/register";
   static const String user = base + "users/";
-  static const String parties = base + "parties"; // not working
+  static const String parties = base + "parties";
+
+  getCreatePartyUrl(int userId) {
+    return user + userId.toString() + "/party";
+  }
+
+  getPartiesOfUserUrl(int userId) {
+    return parties + "/user/" + userId.toString();
+  }
 }

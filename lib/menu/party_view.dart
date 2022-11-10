@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:nextparty/common/desing.dart';
 import 'item_detail.dart';
 
-class Party extends StatefulWidget {
-  const Party({super.key});
+class PartyView extends StatefulWidget {
+  const PartyView({super.key});
 
   @override
-  State<Party> createState() => PartyStateful();
+  State<PartyView> createState() => PartyStateful();
 }
 
-class PartyStateful extends State<Party> {
+class PartyStateful extends State<PartyView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

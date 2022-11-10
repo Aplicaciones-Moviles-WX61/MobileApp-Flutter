@@ -2,6 +2,7 @@ import 'dart:convert';
 
 List<Party> partyFromJsonList(String str) =>
     List<Party>.from(json.decode(str).map((x) => Party.fromJson(x)));
+
 String partyToJson(Party data) => json.encode(data.toJson());
 
 class Party {

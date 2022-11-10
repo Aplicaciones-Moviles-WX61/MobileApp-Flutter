@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nextparty/common/desing.dart';
 import '../common/desing.dart';
+import '../services/party_service.dart';
 
 class CreateParty extends StatefulWidget {
   const CreateParty({super.key});
@@ -11,7 +12,7 @@ class CreateParty extends StatefulWidget {
 }
 
 class CreatePartyStateful extends State<CreateParty> {
-  // partyService service = partyService();
+  partyService service = partyService();
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   TextEditingController partyNameController = TextEditingController();
@@ -20,29 +21,35 @@ class CreatePartyStateful extends State<CreateParty> {
   TextEditingController locationController = TextEditingController();
 
   createParty() async {
-    // var response = await service.createParty(PartyDto(
-    //   name: partyNameController.text,
-    //   description: partyDescriptionController.text,
-    //   date: DateFormat('yyyy-MM-dd')
-    //       .format(DateTime.parse(dateController.text))
-    //       .toString(),
-    //   location: locationController.text,
-    // ));
-    // if (response != null) {
-    //   // showAboutDialog(
-    //   //   context: context,
-    //   //   children: [const Text('Party created successfully')],
-    //   // );
-    //   print(response);
-    // } else {
-    //   showAboutDialog(
-    //     context: context,
-    //     children: [
-    //       const Text('An error has occurred'),
-    //       const Text('Try again'),
-    //     ],
-    //   );
-    // }
+    var party = PartyDto(
+        name: partyNameController.text,
+        description: partyDescriptionController.text,
+        location: locationController.text,
+        date: DateFormat('yyyy-MM-dd')
+            .format(DateTime.parse(dateController.text))
+            .toString());
+    var result = await service.createParty(party);
+    if (result != null) {
+      partyNameController.clear();
+      partyDescriptionController.clear();
+      dateController.clear();
+      locationController.clear();
+      showAboutDialog(
+        context: context,
+        children: [
+          const Text('Se registro la fiesta correctamente'),
+          const Text('Revisa tu lista de eventos'),
+        ],
+      );
+    } else {
+      showAboutDialog(
+        context: context,
+        children: [
+          const Text('An error has occurred'),
+          const Text('Try again'),
+        ],
+      );
+    }
   }
 
   @override

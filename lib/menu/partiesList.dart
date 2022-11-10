@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:nextparty/menu/party_view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/party.dart';
+import '../services/party_service.dart';
 
 class Parties extends StatefulWidget {
   const Parties({super.key});
@@ -9,6 +14,18 @@ class Parties extends StatefulWidget {
 }
 
 class PartiesStateful extends State<Parties> {
+  List<Party> parties = [];
+  @override
+  void initState() {
+    super.initState();
+    var x = partyService().getParties();
+    x.then((value) => setState(() {
+          jsonDecode(value!).forEach((element) {
+            parties.add(Party.fromJson(element));
+          });
+        }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,50 +56,56 @@ class PartiesStateful extends State<Parties> {
                         ),
                       ),
                       Container(height: 20),
-                      ListView(
+                      ListView.builder(
+                        itemCount: parties.length,
                         shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        children: <Widget>[
-                          Container(
-                            child: Card(
-                              elevation: 5,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                child: ListTile(
-                                  title: const Text(
-                                    'Fiesta de Jhon',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xff2699FB)),
-                                  ),
-                                  subtitle: const Text(
-                                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget enim elit. Aliquam interdum ultricies ipsum et sodales. Pellentesque ut massa sed ipsum luctus gravida. Donec sed ex at lectus semper interdum. ',
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.normal,
-                                        color: Color(0xff2699FB)),
-                                  ),
-                                  trailing: const Text(
-                                    '29/10/2022',
-                                    style: TextStyle(
-                                        fontSize: 16, color: Color(0xff2699FB)),
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const Party()),
-                                    );
-                                  },
+                        itemBuilder: (context, index) {
+                          Party party = parties[index];
+                          return Card(
+                            elevation: 5,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                              child: ListTile(
+                                // contentPadding:
+                                //     const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                title: Text(
+                                  party.name,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xff2699FB)),
                                 ),
+                                subtitle: Text(
+                                  party.description,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal,
+                                      color: Color(0xff2699FB)),
+                                ),
+                                trailing: Text(
+                                  DateFormat('dd/MM/yyyy')
+                                      .format(DateTime.parse(party.date!))
+                                      .toString(),
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Color(0xff2699FB)),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const PartyView()),
+                                  );
+                                },
                               ),
                             ),
-                          ),
-                        ],
+                          );
+                        },
+                        // shrinkWrap: true,
+                        // scrollDirection: Axis.vertical,
                       )
                     ],
                   ))),
