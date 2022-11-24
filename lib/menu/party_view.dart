@@ -586,7 +586,7 @@ class PartyView extends State<PartyDetail> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const ItemDetail()));
+                          builder: (context) => ItemDetail(item: item)));
                 },
                 title: Text(
                   item.name,

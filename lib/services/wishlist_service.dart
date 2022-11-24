@@ -8,8 +8,7 @@ class WishlistService {
     Preferences prefs = Preferences();
     await prefs.init();
     var token = await prefs.getToken();
-    var response = await http.get(
-        Uri.parse(ApiConstans().getWishlistUrl(party_id)),
+    var response = await http.get(Uri.parse(Paths().getWishlistUrl(party_id)),
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       return response.body;
@@ -22,8 +21,8 @@ class WishlistService {
     Preferences prefs = Preferences();
     await prefs.init();
     var token = await prefs.getToken();
-    var response = await http
-        .post(Uri.parse(ApiConstans().addWishlistUrl(party_id)), headers: {
+    var response =
+        await http.post(Uri.parse(Paths().addWishlistUrl(party_id)), headers: {
       "Authorization": "Bearer $token"
     }, body: {
       "description": wishlist.description,

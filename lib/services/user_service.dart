@@ -33,7 +33,7 @@ class registerDto {
 class UserService {
   Future<String?> AuthUser(email, password) async {
     // login
-    var response = await http.post(Uri.parse(ApiConstans.login),
+    var response = await http.post(Uri.parse(Paths.login),
         body: {"email": email, "password": password});
     if (response.statusCode == 201) {
       return response.body;
@@ -57,7 +57,7 @@ class UserService {
     await prefs.init();
     var token = await prefs.getToken();
     var id = await prefs.getId();
-    var response = await http.get(Uri.parse(ApiConstans.user + id.toString()),
+    var response = await http.get(Uri.parse(Paths.user + id.toString()),
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       return User.fromJson(jsonDecode(response.body));
@@ -67,7 +67,7 @@ class UserService {
   }
 
   Future<String?> registerUser(registerDto user) async {
-    var response = await http.post(Uri.parse(ApiConstans.register), body: {
+    var response = await http.post(Uri.parse(Paths.register), body: {
       "name": user.name,
       "lastname": user.lastname,
       "email": user.email,

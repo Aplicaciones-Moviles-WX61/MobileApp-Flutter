@@ -1,41 +1,45 @@
-class ApiConstans {
+class Paths {
   static const String base = "https://next-party-api.azurewebsites.net/api/v1/";
-  static const String login = base + "auth/login";
-  static const String register = base + "auth/register";
-  static const String user = base + "users/";
-  static const String parties = base + "parties";
-  static const String wishlist = base + "party";
-  static const String items = base + "items";
+  static const String login = "${base}auth/login";
+  static const String register = "${base}auth/register";
+  static const String user = "${base}users/";
+  static const String parties = "${base}parties";
+  static const String wishlist = "${base}party";
+  static const String items = "${base}items";
 
   getCreatePartyUrl(int userId) {
-    return user + userId.toString() + "/party";
+    return "$user$userId/party";
   }
 
   getPartiesOfUserUrl(int userId) {
-    return parties + "/user/" + userId.toString();
+    return "$parties/user/$userId";
   }
 
   getWishlistUrl(int partyId) {
-    return wishlist + "/" + partyId.toString() + "/wishlist";
+    return "$wishlist/$partyId/wishlist";
   }
 
   addWishlistUrl(int partyId) {
-    return wishlist + "/" + partyId.toString() + "/wishlist/create";
+    return "$wishlist/$partyId/wishlist/create";
   }
 
   itemsUrl(int partyId) {
-    return wishlist + "/" + partyId.toString() + "/items";
+    return "$wishlist/$partyId/items";
   }
 
   getPartyUrl(int partyId) {
-    return parties + "/" + partyId.toString();
+    return "$parties/$partyId";
   }
 
   getGuestsUrl(int partyId) {
-    return parties + "/" + partyId.toString() + "/guests";
+    return "$parties/$partyId/guests";
   }
 
   inviteGuestUrl(int partyId) {
-    return parties + "/" + partyId.toString() + "/invite";
+    return "$parties/$partyId/invite";
+  }
+
+  updateItem(int itemId) {
+    return "$wishlist/1/items/$itemId";
   }
 }

@@ -43,8 +43,7 @@ class PartyService {
     await prefs.init();
     var id = await prefs.getId();
     var token = await prefs.getToken();
-    var response = await http.get(
-        Uri.parse(ApiConstans().getPartiesOfUserUrl(id!)),
+    var response = await http.get(Uri.parse(Paths().getPartiesOfUserUrl(id!)),
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       return response.body;
@@ -62,8 +61,8 @@ class PartyService {
     await prefs.init();
     var id = await prefs.getId();
     var token = await prefs.getToken();
-    var response = await http
-        .post(Uri.parse(ApiConstans().getCreatePartyUrl(id!)), headers: {
+    var response =
+        await http.post(Uri.parse(Paths().getCreatePartyUrl(id!)), headers: {
       "Authorization": "Bearer $token"
     }, body: {
       "name": party.name,
@@ -82,8 +81,7 @@ class PartyService {
     Preferences prefs = Preferences();
     await prefs.init();
     var token = await prefs.getToken();
-    var response =
-        await http.put(Uri.parse(ApiConstans().getPartyUrl(id)), headers: {
+    var response = await http.put(Uri.parse(Paths().getPartyUrl(id)), headers: {
       "Authorization": "Bearer $token"
     }, body: {
       "name": party.name,
@@ -102,7 +100,7 @@ class PartyService {
     Preferences prefs = Preferences();
     await prefs.init();
     var token = await prefs.getToken();
-    var response = await http.get(Uri.parse(ApiConstans().getGuestsUrl(id)),
+    var response = await http.get(Uri.parse(Paths().getGuestsUrl(id)),
         headers: {"Authorization": "Bearer $token"});
     if (response.statusCode == 200) {
       return response.body;
@@ -116,7 +114,7 @@ class PartyService {
     await prefs.init();
     var token = await prefs.getToken();
     var response =
-        await http.post(Uri.parse(ApiConstans().inviteGuestUrl(id)), headers: {
+        await http.post(Uri.parse(Paths().inviteGuestUrl(id)), headers: {
       "Authorization": "Bearer $token"
     }, body: {
       "email": invite.email,
