@@ -1,11 +1,12 @@
 import 'dart:ui';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nextparty/auth/forgot_password.dart';
 import '../services/user_service.dart';
 import 'login.dart';
-import 'package:nextparty/common/desing.dart';
+import 'package:nextparty/common/design.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -23,8 +24,25 @@ class RegisterStateful extends State<Register> {
   TextEditingController dateController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
+  final Uri _url = Uri.parse(
+      'https://www.freeprivacypolicy.com/live/45881ce6-ff56-4c12-829c-4d66aaaa23b1');
+
+  bool terms = false;
+
   // register
   register() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: SpinKitCubeGrid(
+            color: Colors.blue,
+            size: 50.0,
+          ),
+        );
+      },
+    );
+
     var user = await auth.registerUser(
       registerDto(
           name: nameController.text,
@@ -43,12 +61,23 @@ class RegisterStateful extends State<Register> {
       );
       print(user);
     } else {
-      showAboutDialog(
+      Navigator.pop(context);
+      showDialog(
         context: context,
-        children: [
-          const Text('An error has occurred'),
-          const Text('Try again'),
-        ],
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('An error has occurred'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
       );
     }
   }
@@ -62,8 +91,6 @@ class RegisterStateful extends State<Register> {
               child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: SizedBox(
-              height: MediaQuery.of(context).size.height - window.padding.top,
-              // width: MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -206,6 +233,39 @@ class RegisterStateful extends State<Register> {
                         ),
                       ),
                       Container(
+                        // terminos y condiciones
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              value: terms,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  terms = value!;
+                                });
+                              },
+                            ),
+                            Row(
+                              children: [
+                                const Text(
+                                  'I accept the',
+                                  style: TextStyle(color: Color(0xff2699FB)),
+                                ),
+                                TextButton(
+                                  onPressed: _launch,
+                                  child: const Text(
+                                    'T&C and Privacy Policy',
+                                    style: TextStyle(
+                                        color: Color(0xff2699FB),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
                           height: 50,
                           width: double.infinity,
                           padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -252,5 +312,11 @@ class RegisterStateful extends State<Register> {
             ),
           )),
         ));
+  }
+
+  Future<void> _launch() async {
+    if (!await launchUrl(_url)) {
+      throw 'Could not launch $_url';
+    }
   }
 }

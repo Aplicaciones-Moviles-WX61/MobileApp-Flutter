@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nextparty/common/desing.dart';
+import 'package:nextparty/common/design.dart';
 import 'package:nextparty/services/items_service.dart';
 import 'package:nextparty/services/party_service.dart';
 import '../Models/user.dart';
@@ -10,12 +10,13 @@ import '../models/party.dart';
 import '../services/wishlist_service.dart';
 import 'item_detail.dart';
 import 'package:nextparty/models/wishlist.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class PartyDetail extends StatefulWidget {
-  PartyDetail({super.key, required this.party});
+  const PartyDetail({super.key, required this.party});
   final Party party;
   @override
-  State<PartyDetail> createState() => PartyView(this.party);
+  State<PartyDetail> createState() => PartyView(party);
 }
 
 class PartyView extends State<PartyDetail> {
@@ -36,8 +37,18 @@ class PartyView extends State<PartyDetail> {
   Wishlist _wishlist = Wishlist(description: '');
   List<Item> _items = [];
   List<User> _guests = [];
+  var isLoading = true;
+
   PartyView(Party party) {
     _party = party;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      isLoading = true;
+    });
     var x = WishlistService().getWishlist(_party.id!);
     x.then((value) => setState(() {
           _wishlist = Wishlist.fromJson(jsonDecode(value!));
@@ -53,129 +64,140 @@ class PartyView extends State<PartyDetail> {
           _guests = (jsonDecode(value!) as List)
               .map((i) => User.fromJson(i))
               .toList();
+          setState(() {
+            isLoading = false;
+          });
         }));
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.arrow_back_ios_rounded,
-                  color: Color(0xff2699FB)),
-              onPressed: () {
-                if (Navigator.canPop(context)) {
-                  Navigator.pop(context);
-                }
-              },
-            );
-          },
-        ),
-        centerTitle: true,
-        title: Text(
-          _party.name,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Color(0xff2699FB),
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+  Widget build(BuildContext context) => isLoading
+      ? const Scaffold(
+          backgroundColor: Colors.white,
+          body: Center(
+            child: SpinKitCubeGrid(
+              color: Colors.blue,
+              size: 50.0,
+            ),
           ),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(color: Color(0xff2699FB)),
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 10,
+        )
+      : Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: const Icon(Icons.arrow_back_ios_rounded,
+                      color: Color(0xff2699FB)),
+                  onPressed: () {
+                    if (Navigator.canPop(context)) {
+                      Navigator.pop(context);
+                    }
+                  },
+                );
+              },
+            ),
+            centerTitle: true,
+            title: Text(
+              _party.name,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Color(0xff2699FB),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(color: Color(0xff2699FB)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            DateFormat('dd/MM/yyyy')
+                                .format(DateTime.parse(_party.date!))
+                                .toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            _party.name,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 30),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            _party.location!,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 15),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        ],
                       ),
-                      Text(
-                        DateFormat('dd/MM/yyyy')
-                            .format(DateTime.parse(_party.date!))
-                            .toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        _party.name,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 30),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        _party.location!,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(
+                        bottom: 20, top: 20, left: 15, right: 15),
+                    child: wishlistWidget(context),
+                  ),
+                  itemsList(_items),
+                ],
               ),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.only(
-                    bottom: 20, top: 20, left: 15, right: 15),
-                child: wishlistWidget(context),
+            ),
+          ),
+          floatingActionButton: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                heroTag: 'Editar Evento',
+                backgroundColor: Colors.white,
+                onPressed: () {
+                  openEditInfo(context);
+                },
+                tooltip: 'Editar Evento',
+                child: const Icon(Icons.edit, color: Color(0xff2699FB)),
               ),
-              itemsList(_items),
+              const SizedBox(
+                height: 600,
+              ),
+              FloatingActionButton(
+                heroTag: 'Listar Invitados',
+                backgroundColor: const Color(0xff2699FB),
+                onPressed: () {
+                  openGuestsList(context);
+                },
+                tooltip: 'Lista de invitados',
+                child: const Icon(Icons.groups),
+              ),
             ],
           ),
-        ),
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            heroTag: 'Editar Evento',
-            backgroundColor: Colors.white,
-            onPressed: () {
-              openEditInfo(context);
-            },
-            tooltip: 'Editar Evento',
-            child: const Icon(Icons.edit, color: Color(0xff2699FB)),
-          ),
-          const SizedBox(
-            height: 600,
-          ),
-          FloatingActionButton(
-            heroTag: 'Listar Invitados',
-            backgroundColor: const Color(0xff2699FB),
-            onPressed: () {
-              openGuestsList(context);
-            },
-            tooltip: 'Lista de invitados',
-            child: const Icon(Icons.groups),
-          ),
-        ],
-      ),
-    );
-  }
+        );
 
-  Future openEditInfo(BuildContext _context) => showDialog(
-      context: _context,
+  Future openEditInfo(BuildContext context) => showDialog(
+      context: context,
       builder: (context) {
         return AlertDialog(
           title: const Center(
@@ -191,9 +213,9 @@ class PartyView extends State<PartyDetail> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
-                  style: TextStyle(color: Color(0xff2699FB)),
+                  style: const TextStyle(color: Color(0xff2699FB)),
                   controller: partyNameController,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.cake, color: Color(0xff2699FB)),
@@ -207,9 +229,9 @@ class PartyView extends State<PartyDetail> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
-                  style: TextStyle(color: Color(0xff2699FB)),
+                  style: const TextStyle(color: Color(0xff2699FB)),
                   controller: partyDescriptionController,
                   decoration: const InputDecoration(
                     prefixIcon:
@@ -251,9 +273,9 @@ class PartyView extends State<PartyDetail> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10.0, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
                 child: TextField(
-                  style: TextStyle(color: Color(0xff2699FB)),
+                  style: const TextStyle(color: Color(0xff2699FB)),
                   controller: partyLocationController,
                   decoration: const InputDecoration(
                     prefixIcon:
@@ -281,23 +303,24 @@ class PartyView extends State<PartyDetail> {
                       name: partyNameController.text,
                       description: partyDescriptionController.text,
                       date: partyDateController.text,
-                      location: partyDateController.text);
+                      location: partyLocationController.text);
                   var x = PartyService().updateParty(_party.id!, pushParty);
                   x.then((value) {
+                    Party party =
+                        Party.fromJson(const JsonDecoder().convert(value!));
                     setState(() {
-                      print(value);
-                      Navigator.of(context).pop();
+                      _party = party;
                     });
+                    Navigator.of(context).pop();
                   });
-                  Navigator.of(context).pop();
                 },
                 child: const Text('Save')),
           ],
         );
       });
 
-  Future addItem(BuildContext _context) => showDialog(
-      context: _context,
+  Future addItem(BuildContext context) => showDialog(
+      context: context,
       builder: (context) {
         return AlertDialog(
           title: const Center(
@@ -313,9 +336,9 @@ class PartyView extends State<PartyDetail> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
-                  style: TextStyle(color: Color(0xff2699FB)),
+                  style: const TextStyle(color: Color(0xff2699FB)),
                   controller: itemNameController,
                   decoration: const InputDecoration(
                     prefixIcon:
@@ -330,9 +353,9 @@ class PartyView extends State<PartyDetail> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
-                  style: TextStyle(color: Color(0xff2699FB)),
+                  style: const TextStyle(color: Color(0xff2699FB)),
                   controller: itemDescriptionController,
                   decoration: const InputDecoration(
                     prefixIcon:
@@ -347,9 +370,9 @@ class PartyView extends State<PartyDetail> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
                 child: TextField(
-                  style: TextStyle(color: Color(0xff2699FB)),
+                  style: const TextStyle(color: Color(0xff2699FB)),
                   controller: itemQuantityController,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.numbers, color: Color(0xff2699FB)),
@@ -369,7 +392,7 @@ class PartyView extends State<PartyDetail> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Cancel')),
+                child: const Text('Cancel')),
             TextButton(
                 onPressed: () {
                   AddItemDto item = AddItemDto(
@@ -380,17 +403,23 @@ class PartyView extends State<PartyDetail> {
                   );
                   var result = ItemsService().addItem(_party.id!, item);
                   result.then((value) => {
-                        if (value != null) {Navigator.of(context).pop()}
+                        setState(() {
+                          _items = [
+                            ..._items,
+                            Item.fromJsonAdd(
+                                const JsonDecoder().convert(value!))
+                          ];
+                        }),
+                        Navigator.of(context).pop()
                       });
-                  Navigator.of(context).pop();
                 },
-                child: Text('Save')),
+                child: const Text('Save')),
           ],
         );
       });
 
-  Future openGuestsList(BuildContext _context) => showDialog(
-      context: _context,
+  Future openGuestsList(BuildContext context) => showDialog(
+      context: context,
       builder: (context) {
         return AlertDialog(
           title: Center(
@@ -409,7 +438,7 @@ class PartyView extends State<PartyDetail> {
                   height: 20,
                 ),
                 TextField(
-                    style: TextStyle(color: Color(0xff2699FB)),
+                    style: const TextStyle(color: Color(0xff2699FB)),
                     controller: guestEmailController,
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.person, color: Color(0xff2699FB)),
@@ -431,14 +460,34 @@ class PartyView extends State<PartyDetail> {
                             InviteDto(email: guestEmailController.text);
                         var x =
                             PartyService().inviteGuest(_party.id!, pushGuest);
-                        x.then(
-                          (value) => () {
-                            if (value == true) {
-                              print("SISSSSSSSSSSSSSSSS");
-                              Navigator.of(context).pop();
-                            }
-                          },
-                        );
+                        x.then((value) {
+                          if (value != null) {
+                            User guest = User.fromJson(
+                                const JsonDecoder().convert(value));
+                            setState(() {
+                              _guests.add(guest);
+                            });
+                            Navigator.of(context).pop();
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Error"),
+                                  content: const Text("User not found"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text("OK"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        });
                       },
                     )),
               ],
@@ -455,8 +504,8 @@ class PartyView extends State<PartyDetail> {
         );
       });
 
-  Future openCreateWishlist(BuildContext _context, int id) => showDialog(
-      context: _context,
+  Future openCreateWishlist(BuildContext context, int id) => showDialog(
+      context: context,
       builder: (context) {
         return AlertDialog(
           title: const Center(
@@ -473,7 +522,7 @@ class PartyView extends State<PartyDetail> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                style: TextStyle(color: Color(0xff2699FB)),
+                style: const TextStyle(color: Color(0xff2699FB)),
                 controller: wishlistNameController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.description, color: Color(0xff2699FB)),
@@ -499,9 +548,12 @@ class PartyView extends State<PartyDetail> {
                   var response =
                       WishlistService().addWishlist(id, pushWishlist);
                   response.then((value) => {
-                        print(value),
+                        setState(() {
+                          _wishlist = Wishlist.fromJson(
+                              const JsonDecoder().convert(value!));
+                        }),
+                        Navigator.of(context).pop()
                       });
-                  Navigator.of(context).pop();
                 },
                 child: const Text('Save')),
           ],
@@ -509,9 +561,9 @@ class PartyView extends State<PartyDetail> {
       });
 
   Widget guestList(BuildContext context) {
-    return Container(
-      width: 500,
-      // height: 500,
+    return SizedBox(
+      width: 300,
+      height: 300,
       child: ListView.builder(
         itemCount: _guests.length,
         itemBuilder: (context, index) {
@@ -525,7 +577,7 @@ class PartyView extends State<PartyDetail> {
     );
   }
 
-  Widget wishlistWidget(BuildContext _context) {
+  Widget wishlistWidget(BuildContext context) {
     if (_wishlist.id != null) {
       return (Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -558,7 +610,7 @@ class PartyView extends State<PartyDetail> {
             icon: const Icon(Icons.add_circle, color: Color(0xff2699FB)),
             iconSize: 50,
             onPressed: () {
-              openCreateWishlist(_context, _party.id!);
+              openCreateWishlist(context, _party.id!);
             },
           ),
           const Text('Add Wishlist',
@@ -573,6 +625,7 @@ class PartyView extends State<PartyDetail> {
 
   Widget itemsList(List<Item> items) {
     return (ListView.builder(
+      physics: const ScrollPhysics(),
       itemCount: items.length,
       shrinkWrap: true,
       itemBuilder: (context, index) {

@@ -3,7 +3,6 @@ import 'package:nextparty/menu/create_party.dart';
 import 'package:nextparty/menu/partiesList.dart';
 import 'package:nextparty/menu/profile.dart';
 import 'package:nextparty/menu/settings.dart';
-import 'package:nextparty/menu/search.dart';
 
 class Index extends StatefulWidget {
   const Index({super.key});
@@ -17,7 +16,6 @@ class IndexStateful extends State<Index> {
   static const List<Widget> _pages = <Widget>[
     CreateParty(),
     Parties(),
-    Search(),
     Profile(),
     Settings()
   ];
@@ -37,13 +35,7 @@ class IndexStateful extends State<Index> {
               icon: Icon(Icons.list_alt, color: Colors.white70),
               activeIcon: Icon(Icons.list_alt, color: Colors.white),
               backgroundColor: Color(0xff2699FB),
-              label: 'Notifications',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search, color: Colors.white70),
-              activeIcon: Icon(Icons.search, color: Colors.white),
-              backgroundColor: Color(0xff2699FB),
-              label: 'Search',
+              label: 'Parties',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person, color: Colors.white70),
@@ -85,7 +77,7 @@ class IndexStateful extends State<Index> {
           ),
           centerTitle: true,
           title: const Text(
-            'PARTIES',
+            'NEXTPARTY',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Color(0xff2699FB),

@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:nextparty/models/item.dart';
-import '../common/desing.dart';
+import '../common/design.dart';
 import '../services/items_service.dart';
 
 class ItemDetail extends StatefulWidget {
@@ -92,11 +94,15 @@ class Detail extends State<ItemDetail> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(item.description,
-                        style: const TextStyle(
-                            color: Color(0xff2699FB),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold)),
+                    Container(
+                      constraints: const BoxConstraints(maxWidth: 300),
+                      child: Text(item.description,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              color: Color(0xff2699FB),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold)),
+                    ),
                   ],
                 ),
               ),
@@ -206,7 +212,13 @@ class Detail extends State<ItemDetail> {
                       description: itemDescriptionController.text,
                       quantity: int.parse(itemQuantityController.text));
                   var y = ItemsService().updateItem(item.id!, addItemDto);
-                  y.then((value) => {Navigator.of(context).pop()});
+                  y.then((value) => {
+                        setState(() {
+                          item = Item.fromJson(
+                              const JsonDecoder().convert(value!));
+                        }),
+                        Navigator.of(context).pop()
+                      });
                 },
                 child: const Text('Save'))
           ],

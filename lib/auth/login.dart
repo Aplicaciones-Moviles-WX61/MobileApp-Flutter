@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:nextparty/auth/forgot_password.dart';
 import 'package:nextparty/auth/register.dart';
@@ -7,7 +7,7 @@ import 'package:nextparty/index.dart';
 import 'package:nextparty/services/user_service.dart';
 
 import '../Models/user.dart';
-import '../common/desing.dart';
+import '../common/design.dart';
 import '../preferences/preferences.dart';
 
 class Login extends StatefulWidget {
@@ -34,6 +34,17 @@ class LoginStateful extends State<Login> {
   }
 
   login(email, password) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: SpinKitCubeGrid(
+            color: Colors.blue,
+            size: 50.0,
+          ),
+        );
+      },
+    );
     var user = await auth.AuthUser(email, password);
     if (user != null) {
       Map<String, dynamic> body = jsonDecode(user);
@@ -47,12 +58,23 @@ class LoginStateful extends State<Login> {
         MaterialPageRoute(builder: (context) => Index()),
       );
     } else {
-      showAboutDialog(
+      Navigator.pop(context);
+      showDialog(
         context: context,
-        children: [
-          const Text('Email or password is incorrect'),
-          const Text('Try again'),
-        ],
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Invalid credentials'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
       );
     }
   }

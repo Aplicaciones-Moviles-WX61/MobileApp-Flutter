@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nextparty/auth/register.dart';
 
-import '../common/desing.dart';
+import '../common/design.dart';
 import 'login.dart';
 
 class ForgotPassword extends StatefulWidget {

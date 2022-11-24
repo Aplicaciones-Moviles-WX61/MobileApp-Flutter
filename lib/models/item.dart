@@ -33,6 +33,16 @@ class Item {
         image: json["image"],
       );
 
+  factory Item.fromJsonAdd(Map<String, dynamic> json) => Item(
+        id: json["id"],
+        name: json["name"],
+        quantity: int.parse(json["quantity"]),
+        description: json["description"],
+        categoryId: int.parse(json["category_id"]),
+        partyId: json["party_id"],
+        image: json["image"],
+      );
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,

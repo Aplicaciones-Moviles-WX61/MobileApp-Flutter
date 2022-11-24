@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:nextparty/common/desing.dart';
-import '../common/desing.dart';
+import 'package:nextparty/common/design.dart';
+import '../common/design.dart';
 import '../services/party_service.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class CreateParty extends StatefulWidget {
   const CreateParty({super.key});
@@ -28,26 +29,61 @@ class CreatePartyStateful extends State<CreateParty> {
         date: DateFormat('yyyy-MM-dd')
             .format(DateTime.parse(dateController.text))
             .toString());
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(
+          child: SpinKitCubeGrid(
+            color: Colors.blue,
+            size: 50.0,
+            duration: Duration(seconds: 1),
+          ),
+        );
+      },
+    );
     var result = await service.createParty(party);
     if (result != null) {
+      Navigator.pop(context);
       partyNameController.clear();
       partyDescriptionController.clear();
       dateController.clear();
       locationController.clear();
-      showAboutDialog(
+      showDialog(
         context: context,
-        children: [
-          const Text('Se registro la fiesta correctamente'),
-          const Text('Revisa tu lista de eventos'),
-        ],
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Party created'),
+            content: const Text('Party created successfully'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
       );
     } else {
-      showAboutDialog(
+      Navigator.pop(context);
+      showDialog(
         context: context,
-        children: [
-          const Text('An error has occurred'),
-          const Text('Try again'),
-        ],
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Error creating party'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
       );
     }
   }

@@ -109,7 +109,7 @@ class PartyService {
     }
   }
 
-  Future<bool> inviteGuest(int id, InviteDto invite) async {
+  Future<String?> inviteGuest(int id, InviteDto invite) async {
     Preferences prefs = Preferences();
     await prefs.init();
     var token = await prefs.getToken();
@@ -120,9 +120,8 @@ class PartyService {
       "email": invite.email,
     });
     if (response.statusCode == 201) {
-      return true;
-    } else {
-      return false;
+      return response.body;
     }
+    return null;
   }
 }
