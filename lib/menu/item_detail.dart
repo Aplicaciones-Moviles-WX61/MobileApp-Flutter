@@ -89,7 +89,7 @@ class Detail extends State<ItemDetail> {
                       height: 375,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('assets/products/ron.png'),
+                            image: AssetImage('assets/products/gift.png'),
                             fit: BoxFit.cover),
                       ),
                     ),
